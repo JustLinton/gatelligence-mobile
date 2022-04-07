@@ -32,7 +32,7 @@ class _GateAppRootState extends State<GateAppRoot> {
     return Scaffold(
       floatingActionButton: FloatingActionButton(
         child: const Icon(
-          Icons.add_rounded,
+          Icons.mic_none_outlined,
           size: 30,
         ),
         onPressed: () {
@@ -70,7 +70,7 @@ class _GateAppRootState extends State<GateAppRoot> {
           children: <Widget>[
             
             IconButton(
-              icon: const Icon(Icons.home),
+              icon: const Icon(Icons.home_outlined),
               onPressed: (){
                  setState(() {
                    _currentIndex = 0;
@@ -78,7 +78,7 @@ class _GateAppRootState extends State<GateAppRoot> {
               },
             ),
             IconButton(
-              icon: const Icon(Icons.people),
+              icon: const Icon(Icons.person_outline_rounded),
               onPressed: () {
                 setState(() {
                   _currentIndex = 1;

@@ -3,6 +3,8 @@ import 'package:gatelligence/utils/myColor.dart';
 import 'package:gatelligence/widgets/gateRoot.dart';
 import 'package:http/http.dart' as http;
 
+import 'package:gatelligence/pages/introduction_animation/introduction_animation_screen.dart';
+
 import 'package:flutter_native_splash/flutter_native_splash.dart';
 
 void main() {
@@ -19,14 +21,19 @@ class MyApp extends StatelessWidget {
   @override
   Widget build(BuildContext context) {
     //停止显示app启动加载页
-    FlutterNativeSplash.remove();
+    Future.delayed(Duration(milliseconds: 600), () {
+        FlutterNativeSplash.remove();
+      // print('延时1s执行');
+    });
+
     return MaterialApp(
       title: 'Gatelligence',
       theme: ThemeData(
         primarySwatch: createMaterialColor(gateAccentColor),
       ),
       // home: const MyHomePage(title: 'Flutter Demo Home Page'),
-      home: GateAppRoot(),
+      // home: GateAppRoot(),
+      home: const IntroductionAnimationScreen(),
       // home: BottomDragWidget(),
     );
   }
