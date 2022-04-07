@@ -1,0 +1,133 @@
+import 'dart:ffi';
+
+import 'package:flutter/material.dart';
+import 'package:gatelligance/pages/airplay_screen.dart';
+import 'package:gatelligance/pages/user_screen.dart';
+import 'package:gatelligance/pages/home_screen.dart';
+import 'package:gatelligance/pages/pages_screen.dart';
+import 'package:gatelligance/utils/myColor.dart';
+
+class GateAppRoot extends StatefulWidget {
+  _GateAppRootState createState() => _GateAppRootState();
+}
+
+class _GateAppRootState extends State<GateAppRoot> {
+  final _BottomNavigationColor =  gateAccentColor;
+  
+  var _BottomNavigationBgColor= Colors.white;
+  int _currentIndex = 0;
+  List<Widget> list = [];
+
+  @override
+  void initState() {
+    list
+      ..add(HomeScreen())
+      ..add(UserScreen())
+      ..add(PageScreen())
+      ..add(AirplayScreen());
+
+    super.initState();
+  }
+
+  @override
+  Widget build(BuildContext context) {
+    return Scaffold(
+      floatingActionButton: FloatingActionButton(
+        child: Icon(
+          Icons.add,
+          size: 30,
+        ),
+        onPressed: () {
+          setState(() {
+          });
+        },
+        backgroundColor: gateAccentColor,
+        foregroundColor: Colors.white,
+        elevation: 5,
+      ),
+
+      // floatingActionButton: FloatingActionButton.extended(
+      //   onPressed: () {},
+      //   icon: new Icon(Icons.add),
+      //   label: const Text("任务"),
+      // ),
+      floatingActionButtonLocation: FloatingActionButtonLocation.centerDocked,
+      body: list[_currentIndex],
+      bottomNavigationBar: BottomAppBar(
+        shape: CircularNotchedRectangle(),
+        elevation: 3.0,
+        notchMargin: 6,
+        // shape: AutomaticNotchedShape(
+        //     RoundedRectangleBorder(), StadiumBorder(side: BorderSide())),
+        child: Row(
+          mainAxisAlignment: MainAxisAlignment.spaceAround,
+          children: <Widget>[
+            IconButton(
+              icon: Icon(Icons.home),
+              onPressed: (){
+                 setState(() {
+                   _currentIndex = 0;
+                });
+              },
+            ),
+            IconButton(
+              icon: Icon(Icons.people),
+              onPressed: () {
+                setState(() {
+                  _currentIndex = 1;
+                });
+              },
+            )
+          ],
+        ),
+      ),
+      // bottomNavigationBar: BottomNavigationBar(
+      //   items: [
+      //     BottomNavigationBarItem(
+      //       icon: Icon(
+      //         Icons.home,
+      //         color: _BottomNavigationColor,
+      //       ),
+      //       label: 'Home',
+      //       backgroundColor: _BottomNavigationBgColor,
+      //     ),
+      //     BottomNavigationBarItem(
+      //       icon: Icon(
+      //         Icons.email,
+      //         color: _BottomNavigationColor,
+      //       ),
+      //       label: 'Email',
+      //       backgroundColor: _BottomNavigationBgColor,
+      //     ),
+      //     BottomNavigationBarItem(
+      //       icon: Icon(
+      //         Icons.pages,
+      //         color: _BottomNavigationColor,
+      //       ),
+      //       label: 'Pages',
+      //       backgroundColor: _BottomNavigationBgColor,
+      //     ),
+      //     // BottomNavigationBarItem(
+      //     //   icon: Icon(
+      //     //     Icons.airplay,
+      //     //     color: _BottomNavigationColor,
+      //     //   ),
+      //     //   label: 'AirPlay',
+      //     //   backgroundColor: _BottomNavigationBgColor,
+      //     // ),
+      //   ],
+      //   currentIndex: _currentIndex,
+      //   selectedItemColor: Colors.black54,
+      //   unselectedItemColor: Colors.black54,
+      //   type: BottomNavigationBarType.shifting,
+      //   onTap: (int index) {
+      //     setState(() {
+      //       _currentIndex = index;
+      //       if(index==2) _BottomNavigationBgColor=gateAccentColor;
+      //       else _BottomNavigationBgColor = Colors.white;
+      //     });
+      //   },
+      // ),
+    );
+  }
+}
