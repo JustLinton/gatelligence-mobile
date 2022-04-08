@@ -3,7 +3,7 @@ import 'dart:ffi';
 import 'package:flutter/material.dart';
 import 'package:gatelligence/utils/myColor.dart';
 
-import 'package:gatelligence/widgets/linkModeCreateSheet.dart';
+import 'package:gatelligence/widgets/new_task_options_card.dart';
 
 class taskCreateSheet extends StatefulWidget {
   _taskCreateSheetState createState() => _taskCreateSheetState();
@@ -37,7 +37,7 @@ class _taskCreateSheetState extends State<taskCreateSheet> {
                       padding: EdgeInsets.only(
                           left: 32.0,
                           right: 32.0,
-                          top: 32.0,
+                          top: 48.0,
                           bottom: 0.0),
                       child: Text(
                         '创建新摘要',
@@ -65,52 +65,23 @@ class _taskCreateSheetState extends State<taskCreateSheet> {
                     ),
                   ],
                 ),
-                const Padding(
-                  padding: EdgeInsets.all(32.0),
-                  child: TextField(
-                    decoration: InputDecoration(
-                      labelText: "链接",
-                      icon: Icon(Icons.link_outlined),
-                      border: OutlineInputBorder(
-                        borderRadius:
-                            BorderRadius.all(Radius.circular(10)),
-                        borderSide: BorderSide(
-                          width: 2.0,
-                        ),
-                      ),
-                      // hintText: "请输入用户名",
-                      // prefixIcon: Icon(Icons.people_alt_rounded)
-                    ),
-                  ),
-                ),
-                FloatingActionButton(
-                  child: const Icon(
-                    Icons.send_rounded,
-                    size: 30,
-                  ),
-                  onPressed: () {
-                    //关闭当前modal
-                    Navigator.pop(context);
+                Padding(padding: EdgeInsets.only(top: 32)),
+                Column(
+                  mainAxisAlignment: MainAxisAlignment.center,
+                  crossAxisAlignment: CrossAxisAlignment.center,
+                  children: <Widget>[
+                    Row(
+                      mainAxisAlignment: MainAxisAlignment.spaceEvenly,
+                      crossAxisAlignment: CrossAxisAlignment.center,
+                      children: <Widget>[
+                          NewTaskOptionsCard("链接模式"),
+                          NewTaskOptionsCard("本地模式"),
+                    ],)
 
-                    //弹出新modal
-                    showModalBottomSheet(
-                        context: context,
-                        isScrollControlled: true,
-                        shape: const RoundedRectangleBorder(
-                          //这里是modal的边框样式
-                          borderRadius: BorderRadius.only(
-                            topLeft: Radius.circular(20),
-                            topRight: Radius.circular(20),
-                          ),
-                        ),
-                        builder: (BuildContext context) {
-                          return linkModeCreateSheet();
-                        });
-
-                    setState(() {});
-                  },
-                ),
-                Text(' \n \n'),
+                ],),
+                Padding(padding: EdgeInsets.only(top: 32)),
+                TextButton(onPressed: (){}, child: Row(mainAxisAlignment: MainAxisAlignment.center,crossAxisAlignment: CrossAxisAlignment.center, children:<Widget>[Icon(Icons.help_outline_rounded),Padding(padding: EdgeInsets.only(right: 10)), Text('有疑问？点击查看教程')],)),
+                Padding(padding: EdgeInsets.only(top: 32)),
               ],
             )));
               

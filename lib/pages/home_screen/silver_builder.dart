@@ -23,7 +23,7 @@ class HomeScreenSilverBuilder extends StatelessWidget {
                       child: HomeTitle("知识森林"),
                     );
                   }
-                  return HomeNewsCard("Gatelligence Dynamic News Line");
+                  return HomeNewsCard("Gatelligence Dynamic News Line",index);
                 },
                 childCount: 10
               ),

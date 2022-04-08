@@ -2,7 +2,7 @@ import 'package:flutter/material.dart';
 
 import 'package:gatelligence/utils/myColor.dart';
 import 'package:gatelligence/pages/user_screen/user_profile_card.dart';
-import 'package:gatelligence/pages/user_screen/user_settings_row.dart';
+import 'package:gatelligence/pages/user_screen/user_settings_group.dart';
 
 class UserScreenSilverBuilder extends StatelessWidget {
   @override
@@ -22,9 +22,9 @@ class UserScreenSilverBuilder extends StatelessWidget {
                   //     child: HomeTitle("知识森林"),
                   //   );
                   // }
-                  return UserSettingsRow("Gatelligence Dynamic News Line");
+                  return UserSettingsGroup(index);
                 },
-                childCount: 10
+                childCount: 6
               ),
             );
   }

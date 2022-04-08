@@ -30,7 +30,7 @@ class HomeScreen extends StatelessWidget {
               backgroundColor: Colors.white,
               elevation:0.5,
               foregroundColor: gateIconColor,
-              
+              shadowColor:gateAccentColor,
 
               /// This is the part you use this package
               flexibleSpace: CustomizableSpaceBar(

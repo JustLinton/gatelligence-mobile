@@ -18,7 +18,7 @@ class HomeFeaturedNews extends StatelessWidget {
                       padding: EdgeInsets.only(
                           left: 16.0,),
                       child: Text(
-                        '小贴士',
+                        'Gatelligence 讲堂',
                         style: TextStyle(
                           color: Colors.black87,
                           fontSize: 25.0,

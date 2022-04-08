@@ -38,8 +38,8 @@ class MyApp extends StatelessWidget {
         primarySwatch: createMaterialColor(gateAccentColor),
       ),
       // home: const MyHomePage(title: 'Flutter Demo Home Page'),
-      home: GateAppRoot(),
-      // home: const IntroductionAnimationScreen(),
+      // home: GateAppRoot(),
+      home: const IntroductionAnimationScreen(),
       // home: GateMainL(),
     );
   }
