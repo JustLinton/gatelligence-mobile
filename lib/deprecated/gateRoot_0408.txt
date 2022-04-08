@@ -7,9 +7,6 @@ import 'package:gatelligence/utils/myColor.dart';
 
 import 'package:gatelligence/widgets/taskCreateSheet.dart';
 
-import 'package:gatelligence/utils/systemColorSettings.dart';
-import 'package:animated_bottom_navigation_bar/animated_bottom_navigation_bar.dart';
-
 class GateAppRoot extends StatefulWidget {
   _GateAppRootState createState() => _GateAppRootState();
 }
@@ -62,29 +59,34 @@ class _GateAppRootState extends State<GateAppRoot> {
         elevation: 5,
       ),
 
-      // Icons.person_outline_rounded
-
       floatingActionButtonLocation: FloatingActionButtonLocation.centerDocked,
       body: list[_currentIndex],
-      bottomNavigationBar: AnimatedBottomNavigationBar(
-        // elevation: 3.0,
-        // notchMargin: 6,
-        icons: const <IconData>[Icons.home_outlined, Icons.settings_outlined],
-        activeIndex: _currentIndex,
-        activeColor: gateAccentColor,
-        inactiveColor: gateIconColor,
-        splashColor: gateAccentLightColor,
-        gapLocation: GapLocation.center,
-        notchSmoothness: NotchSmoothness.defaultEdge,
-        leftCornerRadius: 18,
-        rightCornerRadius: 18,
-        backgroundColor: Colors.white,
-        onTap: (index) { 
-          if(index==0)utilsSetWhiteSystemColor();
-          if(index==1)utilsSetGatBlueSystemColor();
-          setState(() => _currentIndex = index);
-        },
-        //other params
+      bottomNavigationBar: BottomAppBar(
+        shape: const CircularNotchedRectangle(),
+        elevation: 3.0,
+        notchMargin: 6,
+        child: Row(
+          mainAxisAlignment: MainAxisAlignment.spaceAround,
+          children: <Widget>[
+            
+            IconButton(
+              icon: const Icon(Icons.home_outlined),
+              onPressed: (){
+                 setState(() {
+                   _currentIndex = 0;
+                });
+              },
+            ),
+            IconButton(
+              icon: const Icon(Icons.person_outline_rounded),
+              onPressed: () {
+                setState(() {
+                  _currentIndex = 1;
+                });
+              },
+            )
+          ],
+        ),
       ),
     );
   }

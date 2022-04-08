@@ -1,6 +1,9 @@
 import 'package:flutter/material.dart';
 
 MaterialColor gateAccentColor = createMaterialColor(const Color.fromARGB(255,120, 140, 246));
+MaterialColor gateAccentLightColor = createMaterialColor(Color.fromARGB(255, 192, 201, 239));
+Color gateAccentColot_nm= const Color.fromARGB(255,120, 140, 246);
+Color gateIconColor= Colors.black38;
 
 MaterialColor createMaterialColor(Color color) {
   List strengths = <double>[.05];

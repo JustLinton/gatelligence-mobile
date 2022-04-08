@@ -3,8 +3,12 @@ import 'package:gatelligence/utils/myColor.dart';
 import 'package:gatelligence/widgets/gateRoot.dart';
 import 'package:http/http.dart' as http;
 
+import 'dart:io'; //提供Platform接口
+import 'package:flutter/services.dart'; //提供SystemUiOverlayStyle
+
 import 'package:gatelligence/pages/introduction_animation/introduction_animation_screen.dart';
 
+import 'package:gatelligence/utils/systemColorSettings.dart';
 import 'package:flutter_native_splash/flutter_native_splash.dart';
 
 void main() {
@@ -12,6 +16,8 @@ void main() {
   WidgetsBinding widgetsBinding = WidgetsFlutterBinding.ensureInitialized();
   FlutterNativeSplash.preserve(widgetsBinding: widgetsBinding);
   runApp(const MyApp());
+
+  utilsSetWhiteSystemColor();
 }
 
 class MyApp extends StatelessWidget {
@@ -32,9 +38,9 @@ class MyApp extends StatelessWidget {
         primarySwatch: createMaterialColor(gateAccentColor),
       ),
       // home: const MyHomePage(title: 'Flutter Demo Home Page'),
-      // home: GateAppRoot(),
-      home: const IntroductionAnimationScreen(),
-      // home: BottomDragWidget(),
+      home: GateAppRoot(),
+      // home: const IntroductionAnimationScreen(),
+      // home: GateMainL(),
     );
   }
 }

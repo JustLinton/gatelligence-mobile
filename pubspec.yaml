@@ -37,6 +37,15 @@ dependencies:
   cupertino_icons: ^1.0.2
   http: ^0.13.4
   animations: ^2.0.2
+  animated_bottom_navigation_bar: ^0.3.2
+  customizable_space_bar: ^0.2.0
+
+  # animate_do: ^2.0.0
+  # animated_size_and_fade: ^2.0.0
+  # flutter_icons: ^1.1.0
+  # flutter_screenutil: ^5.0.0+2
+  # flutter_svg: ^0.22.0
+  # google_fonts: ^2.1.0
 
 dev_dependencies:
   flutter_test:
@@ -98,3 +107,9 @@ flutter:
 flutter_native_splash:
   color: "#fafbfe"
   branding: assets/brand3.png
+  # android_12:
+  #   image: assets/android_launch_brand_s.png
+  #   icon_background_color: "#ffffff"
+  android: false
+  #ios: false
+  #web: false
