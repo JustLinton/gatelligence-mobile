@@ -114,7 +114,7 @@ class _HomeNewsCardState extends State<HomeNewsCard> {
       child: Container(
         width: double.infinity,
         height: 100,
-        padding: EdgeInsets.only(left: 8.0, right: 8.0, bottom: 4.0),
+        padding: EdgeInsets.only(left: 0.0, right: 0.0, bottom: 4.0),
         child: getCard(loading, progress),
       ),
 
