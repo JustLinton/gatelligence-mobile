@@ -5,12 +5,13 @@ import 'package:gatelligence/pages/home_screen/featured_news.dart';
 import 'package:gatelligence/pages/home_screen/home_title.dart';
 import 'package:gatelligence/pages/home_screen/news_card.dart';
 
+
 class HomeScreenSilverBuilder extends StatelessWidget {
   @override
   Widget build(BuildContext context) {
-    return  SliverList(
+    return   SliverList(
               delegate: SliverChildBuilderDelegate(
-                (context, index) {
+                (context, index) {  
                   if(index==0) {
                     return Padding(
                         padding: const EdgeInsets.only(top: 32.0,bottom: 16.0),
@@ -23,7 +24,7 @@ class HomeScreenSilverBuilder extends StatelessWidget {
                       child: HomeTitle("知识森林"),
                     );
                   }
-                  return HomeNewsCard("Gatelligence Dynamic News Line",index);
+                  return HomeNewsCard("Gatelligence Dynamic News Line", 0.73,index==2?true:false);
                 },
                 childCount: 10
               ),
