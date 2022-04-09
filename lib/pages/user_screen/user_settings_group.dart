@@ -1,14 +1,20 @@
 import 'package:flutter/material.dart';
 
 import 'package:gatelligence/utils/myColor.dart';
+import 'package:gatelligence/utils/localStorage.dart';
 
 import 'package:gatelligence/pages/user_screen/user_settings_title.dart';
 import 'package:gatelligence/pages/user_screen/settings_pages/personal_info_settings.dart';
+import 'package:gatelligence/pages/user_screen/settings_pages/debug_settings.dart';
+
+import 'package:gatelligence/service/services.dart';
 
 import 'package:gatelligence/utils/systemColorSettings.dart';
+import 'package:gatelligence/utils/welcomeAnimControl.dart';
 
 class UserSettingsGroup extends StatefulWidget {
   int type = 1;
+  
   UserSettingsGroup(int t){
     type=t;
   }
@@ -19,6 +25,10 @@ class _UserSettingsGroupState extends State<UserSettingsGroup> {
 
   int type = 1;
   bool _switchValue1=true;
+  // Obtain shared preferences.
+  // final prefs = SharedPreferences.getInstance();
+
+  String _sayHelloResp="loading..";
 
   _UserSettingsGroupState(int t){
     type=t;
@@ -68,6 +78,9 @@ class _UserSettingsGroupState extends State<UserSettingsGroup> {
 String getTitle(int type) {
     if (type == 1) {
       return "个人设置";
+    }
+    if (type == 2) {
+      return "开发";
     } else {
       return "调试";
     }
@@ -132,6 +145,75 @@ String getTitle(int type) {
                       _switchValue1 = value;
                     });
                   })),
+        ],
+      );
+    }
+    if (type == 2) {
+      return Column(
+        children: <Widget>[
+          ListTile(
+            title: Text('开发人员选项'),
+            leading: Icon(Icons.code_outlined),
+            trailing: Icon(Icons.keyboard_arrow_right),
+            enabled: true,
+            onTap: () {
+              Navigator.push(
+                context,
+                MaterialPageRoute(
+                  builder: (context) => DebugSettings(1),
+                ),
+              );
+            },
+          ),
+          Divider(
+            height: 0.0,
+            indent: 0.0,
+            color: Color.fromARGB(255, 161, 174, 233),
+          ),
+          ListTile(
+            title: Text('重新激活引导页'),
+            leading: Icon(Icons.restore_outlined),
+            trailing: Icon(Icons.keyboard_arrow_right),
+            enabled: true,
+            onTap: (){
+              WelAnimCntl.activate();
+            },
+          ),    
+        ],
+      );
+    }
+    else if (type == -1) {
+      return Column(
+        children: <Widget>[
+          ListTile(
+            title: Text(_sayHelloResp),
+            leading: Icon(Icons.code_outlined),
+            trailing: Icon(Icons.keyboard_arrow_right),
+            enabled: true,
+            onTap: () {
+               setState(() {
+                _sayHelloResp = "loading..";
+              });
+              Service.sayHello().then((value){
+                setState(() {
+                  _sayHelloResp=value;
+                });
+              });
+            },
+          ),
+          Divider(
+            height: 0.0,
+            indent: 0.0,
+            color: Color.fromARGB(255, 161, 174, 233),
+          ),
+          ListTile(
+            title: Text('--'),
+            leading: Icon(Icons.restore_outlined),
+            trailing: Icon(Icons.keyboard_arrow_right),
+            enabled: true,
+            onTap: () {
+            },
+          ),
         ],
       );
     } else {

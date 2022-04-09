@@ -1,14 +1,35 @@
 import 'package:flutter/material.dart';
-import 'package:gatelligence/utils/myColor.dart';
-import 'package:gatelligence/pages/user_screen/user_settings_group.dart';
-// import 'package:gatelligence/utils/systemColorSettings.dart';
 
-class PersonalInfoSettings extends StatelessWidget {
+import 'package:gatelligence/utils/myColor.dart';
+
+import 'package:gatelligence/pages/user_screen/user_settings_group.dart';
+
+
+class DebugSettings extends StatefulWidget {
+  int type = 1;
+  DebugSettings(int t) {
+    type = t;
+  }
+  _DebugSettingsState createState() => _DebugSettingsState(type);
+}
+
+class _DebugSettingsState extends State<DebugSettings> {
+  int type = 1;
+
+  _DebugSettingsState(int t) {
+    type = t;
+  }
+
+  @override
+  void initState() {
+    super.initState();
+  }
+
   @override
   Widget build(BuildContext context) {
     return Scaffold(
       appBar: AppBar(
-        title: Text('个人信息'),
+        title: Text('调试'),
         centerTitle: true,
         backgroundColor: gateAccentColor,
         foregroundColor: Colors.white,
@@ -22,21 +43,20 @@ class PersonalInfoSettings extends StatelessWidget {
         // },),
       ),
       body: CustomScrollView(
-        shrinkWrap: true,
-        // 内容
-        slivers: <Widget>[
-          new SliverPadding(
+    shrinkWrap: true,
+    // 内容
+    slivers: <Widget>[
+        new SliverPadding(
             padding: const EdgeInsets.all(20.0),
             sliver: new SliverList(
-              delegate: new SliverChildListDelegate(
-                <Widget>[
-                  UserSettingsGroup(1),
-                ],
-              ),
+                delegate: new SliverChildListDelegate(
+                    <Widget>[
+                        UserSettingsGroup(-1),
+                    ],
+                ),
             ),
-          ),
-        ],
-      ),
+        ),
+    ],),
     );
   }
 }

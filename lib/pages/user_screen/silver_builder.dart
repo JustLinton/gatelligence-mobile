@@ -5,6 +5,9 @@ import 'package:gatelligence/pages/user_screen/user_profile_card.dart';
 import 'package:gatelligence/pages/user_screen/user_settings_group.dart';
 
 class UserScreenSilverBuilder extends StatelessWidget {
+
+  // List<int> settingsGroupEntry=[0,1,2,-1,-1,-1,-1,-1];
+
   @override
   Widget build(BuildContext context) {
     return  SliverList(

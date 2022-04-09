@@ -1,0 +1,47 @@
+import 'package:flutter/material.dart';
+
+import 'package:gatelligence/utils/myColor.dart';
+
+import 'package:gatelligence/pages/user_screen/user_settings_title.dart';
+// import 'package:gatelligence/pages/user_screen/settings_pages/personal_info_settings.dart';
+// import 'package:gatelligence/pages/user_screen/settings_pages/debug_settings.dart';
+
+import 'package:gatelligence/utils/systemColorSettings.dart';
+
+class DebugSettings extends StatefulWidget {
+  int type = 1;
+  DebugSettings(int t) {
+    type = t;
+  }
+  _DebugSettingsState createState() => _DebugSettingsState(type);
+}
+
+class _DebugSettingsState extends State<DebugSettings> {
+  int type = 1;
+  bool _switchValue1 = true;
+
+  _DebugSettingsState(int t) {
+    type = t;
+  }
+
+  @override
+  void initState() {
+    super.initState();
+  }
+
+  @override
+  Widget build(BuildContext context) {
+    return()
+  }
+
+  String getTitle(int type) {
+    if (type == 1) {
+      return "个人设置";
+    }
+    if (type == 2) {
+      return "开发";
+    } else {
+      return "调试";
+    }
+  }
+}

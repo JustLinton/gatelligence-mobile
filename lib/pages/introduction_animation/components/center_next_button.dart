@@ -2,6 +2,9 @@ import 'package:animations/animations.dart';
 import 'package:flutter/material.dart';
 import 'package:gatelligence/widgets/gateRoot.dart';
 
+import 'package:gatelligence/widgets/login_sheet.dart';
+import 'package:gatelligence/utils/welcomeAnimControl.dart';
+
 class CenterNextButton extends StatelessWidget {
   final AnimationController animationController;
   final VoidCallback onNextClick;
@@ -97,16 +100,14 @@ class CenterNextButton extends StatelessWidget {
                         ? InkWell(
                             key: ValueKey('Sign Up button'),
                             onTap: (){
-                                //   Navigator.push(context,  MaterialPageRoute(
-                                //     builder: (context) => GateAppRoot(),
-                                //   ),
-                                // );
 
-                                Navigator.of(context).pushAndRemoveUntil(
-                                  MaterialPageRoute(
-                                      builder: (context) => GateAppRoot()),
-                                  // ignore: unnecessary_null_comparison
-                                  (route) => route == null);
+                                handleContinueWithSigningIn(context);
+
+                                // Navigator.of(context).pushAndRemoveUntil(
+                                //   MaterialPageRoute(
+                                //       builder: (context) => GateAppRoot()),
+                                //   // ignore: unnecessary_null_comparison
+                                //   (route) => route == null);
                             },
                             child: Padding(
                               padding: EdgeInsets.only(left: 16.0, right: 16.0),
@@ -115,7 +116,7 @@ class CenterNextButton extends StatelessWidget {
                                     MainAxisAlignment.spaceBetween,
                                 children: [
                                   Text(
-                                    '现在注册',
+                                    '注册或登录',
                                     style: TextStyle(
                                       color: Colors.white,
                                       fontSize: 18,
@@ -150,20 +151,25 @@ class CenterNextButton extends StatelessWidget {
                 mainAxisAlignment: MainAxisAlignment.center,
                 children: [
                   Text(
-                    '已有凝智通行证？ ',
+                    '或者以游客身份 ',
                     style: TextStyle(
                       color: Colors.grey,
                       fontSize: 14,
                       fontWeight: FontWeight.normal,
                     ),
                   ),
-                  Text(
-                    '登录',
-                    style: TextStyle(
-                      color: Color(0xff132137),
-                      fontSize: 16,
-                      fontWeight: FontWeight.bold,
-                    ),
+                  InkWell(
+                    onTap: () {
+                       handleContinueAsVisitor(context);
+                    },
+                    child: Text(
+                      '继续',
+                      style: TextStyle(
+                        color: Color(0xff132137),
+                        fontSize: 16,
+                        fontWeight: FontWeight.bold,
+                      ),
+                    )
                   ),
                 ],
               ),
@@ -210,5 +216,30 @@ class CenterNextButton extends StatelessWidget {
         ],
       ),
     );
+  }
+
+  void handleContinueAsVisitor(BuildContext context){
+      Navigator.of(context).pushAndRemoveUntil(
+      MaterialPageRoute(
+          builder: (context) => GateAppRoot()),
+      // ignore: unnecessary_null_comparison
+      (route) => route == null);
+      WelAnimCntl.deactivate();
+  }
+
+  void handleContinueWithSigningIn(BuildContext context){
+    showModalBottomSheet(
+        context: context,
+        isScrollControlled: true,
+        shape: const RoundedRectangleBorder(
+          //这里是modal的边框样式
+          borderRadius: BorderRadius.only(
+            topLeft: Radius.circular(20),
+            topRight: Radius.circular(20),
+          ),
+        ),
+        builder: (BuildContext context) {
+          return LoginSheet(1);
+        });
   }
 }

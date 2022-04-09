@@ -5,7 +5,41 @@ import 'package:customizable_space_bar/customizable_space_bar.dart';
 
 import 'package:gatelligence/pages/home_screen/silver_builder.dart';
 
-class HomeScreen extends StatelessWidget {
+import 'package:pull_to_refresh/pull_to_refresh.dart';
+
+
+class HomeScreen extends StatefulWidget {
+  int type = 1;
+  HomeScreen({Key? key}) : super(key: key);
+  _HomeScreenState createState() => _HomeScreenState();
+}
+
+class _HomeScreenState extends State<HomeScreen> {
+
+List<String> items = ["1", "2", "3", "4", "5", "6", "7", "8"];
+  RefreshController _refreshController =
+      RefreshController(initialRefresh: false);
+
+  void _onRefresh() async{
+    // monitor network fetch
+    await Future.delayed(Duration(milliseconds: 1000));
+    // if failed,use refreshFailed()
+    _refreshController.refreshCompleted();
+  }
+
+  void _onLoading() async{
+    // monitor network fetch
+    await Future.delayed(Duration(milliseconds: 1000));
+    // if failed,use loadFailed(),if no data return,use LoadNodata()
+    items.add((items.length+1).toString());
+    if(mounted)
+    setState(() {
+
+    });
+    _refreshController.loadComplete();
+  }
+
+
   @override
   Widget build(BuildContext context) {
     return Scaffold(
@@ -21,6 +55,41 @@ class HomeScreen extends StatelessWidget {
       //   elevation: 0.4, //默认是4， 设置成0 就是没有阴影了
       // ),
       body: Center(
+        child: SmartRefresher(
+        enablePullDown: true,
+        enablePullUp: true,
+        header: ClassicHeader(
+          outerBuilder:(child){
+            return Container(
+                // color: Colors.white,
+                height: 30,
+                padding: EdgeInsets.only(top: 15),
+                child:child
+            );
+          },
+          refreshingText:"正在刷新",
+          releaseText:"松手!",
+          completeText:"刷新成功",
+          failedText:"刷新失败",
+          idleText:"下拉以刷新",
+        ),
+        footer: ClassicFooter(
+            outerBuilder: (child) {
+              return Container(
+                  // color: Colors.white,
+                  height: 40,
+                  // padding: EdgeInsets.only(bottom: 30),
+                  child: child);
+            },
+            failedText: "加载失败",
+            idleText: "上滑查看更多",
+            noDataText:"没有更多了",
+            loadingText:"正在加载",
+          ),
+        controller: _refreshController,
+        onRefresh: _onRefresh,
+        onLoading: _onLoading,
+  
         child: CustomScrollView(
           slivers: [
             SliverAppBar(
@@ -64,7 +133,7 @@ class HomeScreen extends StatelessWidget {
             ),
           ],
         ),
-      ),
+      ),),
     );
   }
 }
