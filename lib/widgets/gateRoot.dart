@@ -69,7 +69,7 @@ class _GateAppRootState extends State<GateAppRoot> {
       bottomNavigationBar: AnimatedBottomNavigationBar(
         // elevation: 3.0,
         // notchMargin: 6,
-        icons: const <IconData>[Icons.home_outlined, Icons.settings_outlined],
+        icons: const <IconData>[Icons.book_outlined, Icons.settings_outlined],
         activeIndex: _currentIndex,
         activeColor: gateAccentColor,
         inactiveColor: gateIconColor,

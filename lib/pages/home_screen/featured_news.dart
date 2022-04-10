@@ -2,6 +2,7 @@ import 'package:flutter/material.dart';
 
 import 'package:gatelligence/utils/myColor.dart';
 import 'package:gatelligence/pages/home_screen/featured_card.dart';
+import 'package:flutter_staggered_animations/flutter_staggered_animations.dart';
 
 class HomeFeaturedNews extends StatelessWidget {
   @override
@@ -48,9 +49,18 @@ class HomeFeaturedNews extends StatelessWidget {
                   child: ListView.builder(
                     scrollDirection: Axis.horizontal,
                     itemBuilder: (context, index) {
-                      return HomeFeaturedCard("Gatelligence Dynamic Card");
+                      return AnimationConfiguration.staggeredList(
+                        position: index,
+                        duration: const Duration(milliseconds: 814),
+                          child: SlideAnimation(
+                            horizontalOffset: 50.0,
+                            child: FadeInAnimation(
+                              child: HomeFeaturedCard("Gatelligence Dynamic Card"),
+                            ),
+                          ),
+                      ); 
                     },
-                    itemCount: 60,
+                    itemCount: 7,
                   ),
                 ),
                 

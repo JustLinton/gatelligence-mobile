@@ -41,7 +41,7 @@ class MyApp extends StatelessWidget {
   @override
   Widget build(BuildContext context) {
     //停止显示app启动加载页
-    Future.delayed(Duration(milliseconds: 600), () {
+    Future.delayed(const Duration(milliseconds: 600), () {
         FlutterNativeSplash.remove();
       // print('延时1s执行');
     });

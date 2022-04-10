@@ -10,6 +10,8 @@ import 'package:gatelligence/pages/user_screen/settings_pages/debug_settings.dar
 import 'package:gatelligence/service/services.dart';
 
 import 'package:gatelligence/utils/systemColorSettings.dart';
+
+import 'package:gatelligence/utils/dialogs.dart';
 import 'package:gatelligence/utils/welcomeAnimControl.dart';
 
 class UserSettingsGroup extends StatefulWidget {
@@ -192,7 +194,7 @@ String getTitle(int type) {
             enabled: true,
             onTap: () {
                setState(() {
-                _sayHelloResp = "loading..";
+                _sayHelloResp = "进行连通性测试";
               });
               Service.sayHello().then((value){
                 setState(() {
@@ -212,6 +214,7 @@ String getTitle(int type) {
             trailing: Icon(Icons.keyboard_arrow_right),
             enabled: true,
             onTap: () {
+              GateDialog.showLoading(context);
             },
           ),
         ],

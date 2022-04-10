@@ -112,8 +112,9 @@ class _LoginSheetState extends State<LoginSheet> {
                                             '登录',
                                             style: TextStyle(fontWeight: FontWeight.bold),
                                           ),
-                                          onPressed: form!.valid ? _onSubmit : null,
+                                          onPressed: form.valid ? _onSubmit : null,
                                           color: gateAccentColor,
+                                          disabledColor: gateDisabledColor,
                                           textColor: Colors.white,
                                           elevation: 0,
                                           shape: const RoundedRectangleBorder(
@@ -125,7 +126,9 @@ class _LoginSheetState extends State<LoginSheet> {
                                   ),
       
                                 const Padding(padding: EdgeInsets.only(bottom: 16)),
-                                LoginThirdPartyCard(1)
+                                Divider(height: 32,thickness: 2),
+                                LoginThirdPartyCard(1),
+                                LoginThirdPartyCard(2),
                               ],
                             ),
                           ),
@@ -135,8 +138,10 @@ class _LoginSheetState extends State<LoginSheet> {
   }
 
   void _onSubmit() {
+    GateDialog.showLoading(context);
     Service.loginViaEmail(form.control('email').value, form.control('password').value)
       .then((value){
+        Navigator.pop(context); //关闭加载动画
         if(value){
             Navigator.of(context).pushAndRemoveUntil(
             MaterialPageRoute(builder: (context) => GateAppRoot()),

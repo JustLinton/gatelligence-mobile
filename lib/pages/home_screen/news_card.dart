@@ -5,31 +5,23 @@ import 'package:gatelligence/pages/news_screen.dart';
 import 'package:liquid_progress_indicator/liquid_progress_indicator.dart';
 
 import 'package:flutter_slidable/flutter_slidable.dart';
+import 'package:gatelligence/entity/userTaskList.dart';
 
 class HomeNewsCard extends StatefulWidget {
-  String content = "加载中..";
+  TaskList content=TaskList();
   double progress = 1;
   bool loading=false;
 
-  HomeNewsCard(String cont, double prg,bool lod) {
+  HomeNewsCard(TaskList cont, double prg,bool lod) {
     content = cont;
     progress = prg;
     loading=lod;
   }
   @override
-  _HomeNewsCardState createState() => _HomeNewsCardState(content,progress,loading);
+  _HomeNewsCardState createState() => _HomeNewsCardState();
 }
 
 class _HomeNewsCardState extends State<HomeNewsCard> {
-  String content = "加载中..";
-  double progress=1;
-  bool loading=false;
-
-  _HomeNewsCardState(String cont,double ind,bool lod) {
-    content = cont;
-    progress=ind;
-    loading=lod;
-  }
 
 
   Card getCard(bool loading,double progress){
@@ -81,10 +73,11 @@ class _HomeNewsCardState extends State<HomeNewsCard> {
   }
 
   Center getCardContent(){
+    var title=widget.content.title;
     return Center(
               child:Container(
                   child:  Text(
-                          content,
+                          title!,
                           style: TextStyle(
                             fontSize: 16.0,
                             fontWeight: FontWeight.bold,
@@ -93,6 +86,16 @@ class _HomeNewsCardState extends State<HomeNewsCard> {
                   ),
               )
           );
+  }
+
+  bool isLoading(){
+    var progress = widget.content.progress;
+    return progress!="100";
+  }
+
+  double getProgress(){
+    // var progress = widget.content.progress;
+    return 0.75;
   }
 
   @override
@@ -115,7 +118,7 @@ class _HomeNewsCardState extends State<HomeNewsCard> {
         width: double.infinity,
         height: 100,
         padding: EdgeInsets.only(left: 0.0, right: 0.0, bottom: 4.0),
-        child: getCard(loading, progress),
+        child: getCard(isLoading(), getProgress()),
       ),
 
 

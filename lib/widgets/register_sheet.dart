@@ -2,6 +2,10 @@ import 'package:flutter/material.dart';
 import 'package:reactive_forms/reactive_forms.dart';
 
 import 'package:gatelligence/utils/myColor.dart';
+import 'package:gatelligence/service/services.dart';
+import 'package:gatelligence/widgets/gateRoot.dart';
+import 'package:gatelligence/utils/welcomeAnimControl.dart';
+import 'package:gatelligence/utils/dialogs.dart';
 
 class RegisterSheet extends StatefulWidget {
   int type = 1;
@@ -120,7 +124,25 @@ class _RegisterSheetState extends State<RegisterSheet> {
                               {'mustMatch': '两次密码输入不一致', 'minLength': '密码长度至少为8位'},
                                 ),
                                 const Padding(padding: EdgeInsets.only(bottom: 16)),
-                                MySubmitButton(), 
+                                 ReactiveFormConsumer(
+                                  builder: (context, form, child) {
+                                    return MaterialButton(
+                                      child: const Text(
+                                        '立即注册',
+                                        style: TextStyle(fontWeight: FontWeight.bold),
+                                      ),
+                                      onPressed: form.valid ? _onSubmit : null,
+                                      color: gateAccentColor,
+                                      disabledColor: gateDisabledColor,
+                                      textColor: Colors.white,
+                                      elevation: 0,
+                                      shape: const RoundedRectangleBorder(
+                                        borderRadius:
+                                            BorderRadius.all(Radius.circular(8.0)),
+                                      ),
+                                    );
+                                  },
+                                ),
                               ],
                             ),
                           ),
@@ -129,6 +151,31 @@ class _RegisterSheetState extends State<RegisterSheet> {
             )));
   }
 
+  void _onSubmit() {
+    GateDialog.showLoading(context);
+    Service.registerViaEmail(
+            form.control('email').value, form.control('password').value, form.control('nickName').value)
+        .then((value) {
+        Navigator.pop(context);//关闭加载动画
+      if (value) {
+          Service.loginViaEmail(
+                form.control('email').value, form.control('password').value)
+            .then((value) {
+          if (value) {
+            Navigator.of(context).pushAndRemoveUntil(
+                MaterialPageRoute(builder: (context) => GateAppRoot()),
+                // ignore: unnecessary_null_comparison
+                (route) => route == null);
+            WelAnimCntl.deactivate();
+          } else {
+            GateDialog.showAlert(context, "错误", "自动登录失败~");
+          }
+        });
+      } else {
+        GateDialog.showAlert(context, "错误", "邮箱已被占用~");
+      }
+    });
+  }
 
   InputDecoration getTextFieldDec(String title,Icon icon){
     return InputDecoration(
