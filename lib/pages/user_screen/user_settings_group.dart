@@ -104,18 +104,18 @@ String getTitle(int type) {
                 );
             },
           ),
-          Divider(
-            height: 0.0,
-            indent: 0.0,
-            color: Color.fromARGB(255, 161, 174, 233),
-          ),
-          ListTile(
-            title: Text('修改密码'),
-            leading: Icon(Icons.key_outlined),
-            trailing: Icon(Icons.keyboard_arrow_right),
-            enabled: true,
-            onTap: () {},
-          ),
+          // Divider(
+          //   height: 0.0,
+          //   indent: 0.0,
+          //   color: Color.fromARGB(255, 161, 174, 233),
+          // ),
+          // ListTile(
+          //   title: Text('修改密码'),
+          //   leading: Icon(Icons.key_outlined),
+          //   trailing: Icon(Icons.keyboard_arrow_right),
+          //   enabled: true,
+          //   onTap: () {},
+          // ),
           Divider(
             height: 0.0,
             indent: 0.0,
@@ -128,6 +128,7 @@ String getTitle(int type) {
             enabled: true,
             onTap: () {},
           ),
+         
           Divider(
             height: 0.0,
             indent: 0.0,
@@ -147,6 +148,20 @@ String getTitle(int type) {
                       _switchValue1 = value;
                     });
                   })),
+          Divider(
+            height: 0.0,
+            indent: 0.0,
+            color: Color.fromARGB(255, 161, 174, 233),
+          ),
+          ListTile(
+            title: Text('退出登录'),
+            leading: Icon(Icons.logout_outlined),
+            trailing: Icon(Icons.keyboard_arrow_right),
+            enabled: true,
+            onTap: () {
+              Service.logout();
+            },
+          ),
         ],
       );
     }

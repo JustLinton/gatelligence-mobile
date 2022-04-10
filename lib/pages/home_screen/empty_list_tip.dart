@@ -26,6 +26,13 @@ class _EmptyListTipState extends State<EmptyListTip> {
               Text('data'),
             ],);
     }
+    if (type == 0) {
+      return Column(
+        children: [
+          Text('未登录'),
+        ],
+      );
+    }
     return Column(
       children: [
         Text('发生错误'),

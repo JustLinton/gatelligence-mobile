@@ -51,7 +51,7 @@ class HomeFeaturedNews extends StatelessWidget {
                     itemBuilder: (context, index) {
                       return AnimationConfiguration.staggeredList(
                         position: index,
-                        duration: const Duration(milliseconds: 814),
+                        duration: const Duration(milliseconds: 1214),
                           child: SlideAnimation(
                             horizontalOffset: 50.0,
                             child: FadeInAnimation(

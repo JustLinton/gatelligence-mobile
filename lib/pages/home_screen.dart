@@ -14,6 +14,8 @@ import 'package:http/http.dart';
 import 'package:pull_to_refresh/pull_to_refresh.dart';
 import 'package:gatelligence/service/cache.dart';
 
+import 'package:flutter_staggered_animations/flutter_staggered_animations.dart';
+
 class HomeScreen extends StatefulWidget {
   int type = 1;
   HomeScreen({Key? key}) : super(key: key);
@@ -100,29 +102,31 @@ class _HomeScreenState extends State<HomeScreen> {
         var success = value.isSuccess;
         var errMsg = value.errorMsg;
         var taskList = value.taskList;
+        bool notlogged=false;
         if (success != null && errMsg != null && taskList != null) {
           if (success) {
-            Future.delayed(const Duration(milliseconds: 200), () {
               setState(() {
-                //强制欣赏加载动画
                 _taskList = taskList;
-                if (_firstTimeLoading) {
-                  _firstTimeLoading = false;
-                }
               });
-            });
           } else {
             if (errMsg == "501") {
               GateDialog.showAlert(context, "错误", "未登录");
-              setState(() {
-                _notlogged = true;
-              });
+              // setState(() {
+              //   _notlogged = true;
+              // });
+               notlogged = true;
             }
           }
         } else {
           GateDialog.showAlert(context, "错误", "未知错误");
         }
-        _refreshController.refreshCompleted();
+        if (_firstTimeLoading) {
+          setState(() {
+             _firstTimeLoading = false;
+             _notlogged=notlogged;
+          });
+        }
+        // _refreshController.refreshCompleted();
       });
     }
 

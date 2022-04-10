@@ -2,7 +2,6 @@ import 'package:flutter/material.dart';
 import 'package:gatelligence/utils/myColor.dart';
 
 import 'package:customizable_space_bar/customizable_space_bar.dart';
-
 import 'package:gatelligence/pages/user_screen/silver_builder.dart';
 
 class UserScreen extends StatelessWidget {

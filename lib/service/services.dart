@@ -1,6 +1,7 @@
 import 'dart:convert';
 
 import 'package:dio/dio.dart';
+import 'package:gatelligence/entity/checkLinkTransactionResponse.dart';
 import 'package:gatelligence/utils/localStorage.dart';
 import 'package:shared_preferences/shared_preferences.dart';
 
@@ -71,6 +72,26 @@ class Service {
     ret=UserTaskList.fromJson(data);
 
     return ret;
+  }
+
+   static Future<CheckLinkTransactionResponse> checkLinkTransaction(String tid) async {
+    Response response;
+    CheckLinkTransactionResponse ret;
+    var dio = Dio();
+    var token = await LocalStorage.getString('token');
+    var formData = FormData.fromMap({
+      'token': token,
+      'tid': tid,
+    });
+    response = await dio.post(baseURL + '/frontEnd/checkLinkTransaction', data: formData);
+    var data = jsonDecode(response.toString()); //3
+    ret = CheckLinkTransactionResponse.fromJson(data);
+
+    return ret;
+  }
+
+  static logout(){
+    LocalStorage.remove('token');
   }
 
 }

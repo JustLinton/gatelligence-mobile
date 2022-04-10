@@ -8,7 +8,7 @@ import 'package:gatelligence/pages/home_screen/news_card_skeleton.dart';
 import 'package:gatelligence/pages/home_screen/empty_list_tip.dart';
 import 'package:flutter_staggered_animations/flutter_staggered_animations.dart';
 import 'package:gatelligence/entity/userTaskList.dart';
-import 'package:shimmer_animation/shimmer_animation.dart';
+// import 'package:shimmer_animation/shimmer_animation.dart';
 
 class HomeScreenSilverBuilder extends StatefulWidget {
   List<TaskList> _taskList = [];
@@ -46,7 +46,7 @@ class _HomeScreenSilverBuilderState extends State<HomeScreenSilverBuilder> {
                   // return HomeNewsCard("Gatelligence Dynamic News Line", 0.73,index==2?true:false);
                   return AnimationConfiguration.staggeredList(
                     position: index,
-                    duration: const Duration(milliseconds: 512),
+                    duration: const Duration(milliseconds: 212),
                     child: SlideAnimation(
                       verticalOffset: 50.0,
                       child: FadeInAnimation(
@@ -55,7 +55,7 @@ class _HomeScreenSilverBuilderState extends State<HomeScreenSilverBuilder> {
                         :widget._notlogged?
                         EmptyListTip(0)
                         :widget._taskList.isEmpty? 
-                        EmptyListTip(1) :HomeNewsCard(widget._taskList[index-2], 0.73,index==2?true:false),
+                        EmptyListTip(1) :HomeNewsCard(widget._taskList[index-2]),
                       ),
                     ),
                   );

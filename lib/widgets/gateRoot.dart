@@ -65,7 +65,11 @@ class _GateAppRootState extends State<GateAppRoot> {
       // Icons.person_outline_rounded
 
       floatingActionButtonLocation: FloatingActionButtonLocation.centerDocked,
-      body: list[_currentIndex],
+      // body: list[_currentIndex],
+      body: IndexedStack(
+      index: _currentIndex,
+      children: list,
+    ),
       bottomNavigationBar: AnimatedBottomNavigationBar(
         // elevation: 3.0,
         // notchMargin: 6,
