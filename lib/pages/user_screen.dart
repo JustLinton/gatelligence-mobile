@@ -14,12 +14,12 @@ import '../utils/dialogs.dart';
 
 
 class UserScreen extends StatefulWidget {
-
-  UserScreen() {}
-  _UserScreenState createState() => _UserScreenState();
+  UserScreen({Key? key}) : super(key: key) {}
+  @override
+  UserScreenState createState() => UserScreenState();
 }
 
-class _UserScreenState extends State<UserScreen> {
+class UserScreenState extends State<UserScreen> {
 
   String _avatarLink = "";
   String _nickName = "";

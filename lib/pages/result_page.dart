@@ -99,11 +99,23 @@ class _ResultPageState extends State<ResultPage> {
                     child: Column(
                       mainAxisAlignment: MainAxisAlignment.start,
                       children: [
-                        Text(_title),
+                        Padding(padding: EdgeInsets.only(bottom: 32)),
+                        Text(_title,
+                        style: TextStyle(fontWeight: FontWeight.bold,fontSize: 20),textAlign: TextAlign.center,),
+                        Padding(padding: EdgeInsets.only(bottom: 16)),
+                        Divider(height: 16,thickness: 3,),
+                        Padding(padding: EdgeInsets.only(bottom: 32)),
                         HomeTitle("摘要"),
-                        Text(_summarizedPar),
+                        Padding(padding: EdgeInsets.only(left: 16,right: 16,top: 16,bottom: 32),child:  Text(_summarizedPar,style: TextStyle(fontSize: 15.3),),),
                         HomeTitle("原文"),
-                        Text(_originalPar),
+                         Padding(
+                          padding:
+                              EdgeInsets.only(left: 16, right: 16, top: 16,bottom: 32),
+                          child: Text(
+                            _originalPar,
+                            style: TextStyle(fontSize: 15.3),
+                          ),
+                        ),
                       ],
                     ),)
                   

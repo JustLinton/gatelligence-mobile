@@ -1,4 +1,5 @@
 import 'package:flutter/material.dart';
+import 'package:gatelligence/pages/home_screen.dart';
 import 'package:gatelligence/service/services.dart';
 import 'package:gatelligence/utils/systemColorSettings.dart';
 import 'package:reactive_forms/reactive_forms.dart';
@@ -10,6 +11,10 @@ import 'package:gatelligence/utils/welcomeAnimControl.dart';
 import 'package:gatelligence/utils/dialogs.dart';
 
 class LinkModeCreateSheet extends StatefulWidget {
+
+  late GlobalKey<HomeScreenState> homeScreenKey;
+
+  LinkModeCreateSheet(this.homeScreenKey);
 
   @override
   _LinkModeCreateSheetState createState() => _LinkModeCreateSheetState();
@@ -119,11 +124,12 @@ class _LinkModeCreateSheetState extends State<LinkModeCreateSheet> {
       if (success != null && errMsg != null && tid != null) {
         if (success) {
           Navigator.pop(context);
-          Navigator.of(context).pushAndRemoveUntil(
-              MaterialPageRoute(builder: (context) => GateAppRoot()),
-              // ignore: unnecessary_null_comparison
-              (route) => route == null);
-          utilsSetWhiteSystemColor();
+          // Navigator.of(context).pushAndRemoveUntil(
+          //     MaterialPageRoute(builder: (context) => GateAppRoot()),
+          //     // ignore: unnecessary_null_comparison
+          //     (route) => route == null);
+          // utilsSetWhiteSystemColor();
+          widget.homeScreenKey.currentState?.doRefresh();
         } else {
           if (errMsg == "501") {
             GateDialog.showLoginAlert(context);

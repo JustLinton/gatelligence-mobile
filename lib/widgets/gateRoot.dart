@@ -21,11 +21,16 @@ class _GateAppRootState extends State<GateAppRoot> {
   int _currentIndex = 0;
   List<Widget> list = [];
 
+  final GlobalKey<HomeScreenState> homeScreenKey=
+      GlobalKey<HomeScreenState>();
+   final GlobalKey<UserScreenState> userScreenKey = GlobalKey<UserScreenState>();
+
+
   @override
   void initState() {
     list
-      ..add(HomeScreen())
-      ..add(UserScreen());
+      ..add(HomeScreen(key:homeScreenKey))
+      ..add(UserScreen(key:userScreenKey));
 
     super.initState();
   }
@@ -51,7 +56,7 @@ class _GateAppRootState extends State<GateAppRoot> {
               ),
             ),
             builder: (BuildContext context) {
-              return taskCreateSheet();
+              return TaskCreateSheet(homeScreenKey);
             }
           );
   
@@ -84,7 +89,7 @@ class _GateAppRootState extends State<GateAppRoot> {
         rightCornerRadius: 18,
         backgroundColor: Colors.white,
         onTap: (index) { 
-          if(index==0)utilsSetWhiteSystemColor();
+          if(index==0){utilsSetWhiteSystemColor();}
           if(index==1)utilsSetGatBlueSystemColor();
           setState(() => _currentIndex = index);
         },

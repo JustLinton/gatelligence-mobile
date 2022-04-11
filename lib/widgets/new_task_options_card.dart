@@ -1,4 +1,5 @@
 import 'package:flutter/material.dart';
+import 'package:gatelligence/pages/home_screen.dart';
 
 import 'package:gatelligence/utils/myColor.dart';
 import 'package:gatelligence/pages/news_screen.dart';
@@ -7,7 +8,9 @@ import 'package:gatelligence/widgets/linkModeCreateSheet.dart';
 class NewTaskOptionsCard extends StatelessWidget {
   String content="加载中..";
 
-  NewTaskOptionsCard(this.content){}
+  late GlobalKey<HomeScreenState> homeScreenKey;
+
+  NewTaskOptionsCard(this.content,this.homeScreenKey){}
 
   @override
   Widget build(BuildContext context) {
@@ -28,7 +31,7 @@ class NewTaskOptionsCard extends StatelessWidget {
                 ),
               ),
               builder: (BuildContext context) {
-                return LinkModeCreateSheet();
+                return LinkModeCreateSheet(homeScreenKey);
               });
         },
         child: 

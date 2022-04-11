@@ -1,15 +1,20 @@
 import 'dart:ffi';
 
 import 'package:flutter/material.dart';
+import 'package:gatelligence/pages/home_screen.dart';
 import 'package:gatelligence/utils/myColor.dart';
 
 import 'package:gatelligence/widgets/new_task_options_card.dart';
 
-class taskCreateSheet extends StatefulWidget {
-  _taskCreateSheetState createState() => _taskCreateSheetState();
+class TaskCreateSheet extends StatefulWidget {
+  late GlobalKey<HomeScreenState> homeScreenKey;
+
+  TaskCreateSheet(this.homeScreenKey);
+
+  _TaskCreateSheetState createState() => _TaskCreateSheetState();
 }
 
-class _taskCreateSheetState extends State<taskCreateSheet> {
+class _TaskCreateSheetState extends State<TaskCreateSheet> {
   // final _BottomNavigationColor = gateAccentColor;
 
   // var _BottomNavigationBgColor = Colors.white;
@@ -74,8 +79,8 @@ class _taskCreateSheetState extends State<taskCreateSheet> {
                       mainAxisAlignment: MainAxisAlignment.spaceEvenly,
                       crossAxisAlignment: CrossAxisAlignment.center,
                       children: <Widget>[
-                          NewTaskOptionsCard("链接模式"),
-                          NewTaskOptionsCard("本地模式"),
+                          NewTaskOptionsCard("链接模式",widget.homeScreenKey),
+                          NewTaskOptionsCard("本地模式",widget.homeScreenKey),
                     ],)
 
                 ],),

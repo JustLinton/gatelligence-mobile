@@ -20,10 +20,11 @@ class HomeScreen extends StatefulWidget {
   int type = 1;
   HomeScreen({Key? key}) : super(key: key);
   @override
-  _HomeScreenState createState() => _HomeScreenState();
+  HomeScreenState createState() => HomeScreenState();
 }
+// class SwitcherScreenState extends State<HomeScreen> {}
 
-class _HomeScreenState extends State<HomeScreen> {
+class HomeScreenState extends State<HomeScreen> {
   List<TaskList> _taskList = [];
   int maxPageNow = 1;
   bool _firstTimeLoading = true;
@@ -31,6 +32,10 @@ class _HomeScreenState extends State<HomeScreen> {
 
   RefreshController _refreshController =
       RefreshController(initialRefresh: false);
+
+  doRefresh(){
+    _onRefresh();
+  }
 
   void _onRefresh() async {
     // monitor network fetch
