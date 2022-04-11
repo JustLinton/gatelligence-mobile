@@ -48,16 +48,19 @@ class _HomeScreenState extends State<HomeScreen> {
           });
         } else {
           if (errMsg == "501") {
-            GateDialog.showAlert(context, "错误", "未登录");
+            GateDialog.showLoginAlert(context);
             setState(() {
               _notlogged = true;
             });
           }
         }
+        _refreshController.loadComplete();
+        _refreshController.refreshCompleted();
       } else {
-        GateDialog.showAlert(context, "错误", "未知错误");
+        // GateDialog.showAlert(context, "错误", "未知错误");
+        _refreshController.refreshFailed();
       }
-      _refreshController.refreshCompleted();
+      
     });
   }
 
@@ -81,16 +84,21 @@ class _HomeScreenState extends State<HomeScreen> {
             });
           } else {
             if (errMsg == "501") {
-              GateDialog.showAlert(context, "错误", "未登录");
+              GateDialog.showLoginAlert(context);
               setState(() {
                 _notlogged = true;
               });
             }
           }
+             if (taskList.isEmpty) {
+               _refreshController.loadNoData();
+             } else {
+               _refreshController.loadComplete();
+             }
         } else {
-          GateDialog.showAlert(context, "错误", "未知错误");
+          // GateDialog.showAlert(context, "错误", "未知错误");
+          _refreshController.loadFailed();
         }
-        _refreshController.loadComplete();
       });
     }
   }
@@ -110,7 +118,7 @@ class _HomeScreenState extends State<HomeScreen> {
               });
           } else {
             if (errMsg == "501") {
-              GateDialog.showAlert(context, "错误", "未登录");
+              // GateDialog.showAlert(context, "错误", "未登录");
               // setState(() {
               //   _notlogged = true;
               // });
@@ -170,7 +178,7 @@ class _HomeScreenState extends State<HomeScreen> {
             },
             failedText: "加载失败",
             idleText: "上滑查看更多",
-            noDataText: "没有更多了",
+            noDataText: "米有更多了~",
             loadingText: "正在加载",
           ),
           controller: _refreshController,

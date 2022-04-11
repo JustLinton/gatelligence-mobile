@@ -1,5 +1,6 @@
 import 'package:flutter/material.dart';
 import 'package:gatelligence/service/services.dart';
+import 'package:gatelligence/utils/systemColorSettings.dart';
 import 'package:reactive_forms/reactive_forms.dart';
 
 import 'package:gatelligence/utils/myColor.dart';
@@ -10,8 +11,6 @@ import 'package:gatelligence/utils/dialogs.dart';
 
 class LinkModeCreateSheet extends StatefulWidget {
 
-
-  LinkModeCreateSheet({Key? key}) : super(key: key) {}
   @override
   _LinkModeCreateSheetState createState() => _LinkModeCreateSheetState();
 }
@@ -94,7 +93,7 @@ class _LinkModeCreateSheetState extends State<LinkModeCreateSheet> {
                                 Icons.send_rounded,
                                 size: 30,
                               ),
-                              onPressed: () {},
+                              onPressed: _onSubmit,
                             );
                           },
                         ),
@@ -109,18 +108,29 @@ class _LinkModeCreateSheetState extends State<LinkModeCreateSheet> {
 
   void _onSubmit() {
     GateDialog.showLoading(context);
-    Service.loginViaEmail(
-            form.control('email').value, form.control('password').value)
+    Service.createLinkTransaction(
+            form.control('link').value)
         .then((value) {
       Navigator.pop(context); //关闭加载动画
-      if (value) {
-        Navigator.of(context).pushAndRemoveUntil(
-            MaterialPageRoute(builder: (context) => GateAppRoot()),
-            // ignore: unnecessary_null_comparison
-            (route) => route == null);
-        WelAnimCntl.deactivate();
+      
+      var success = value.isSuccess;
+      var errMsg = value.errorMsg;
+      var tid = value.transactionID;
+      if (success != null && errMsg != null && tid != null) {
+        if (success) {
+          Navigator.pop(context);
+          Navigator.of(context).pushAndRemoveUntil(
+              MaterialPageRoute(builder: (context) => GateAppRoot()),
+              // ignore: unnecessary_null_comparison
+              (route) => route == null);
+          utilsSetWhiteSystemColor();
+        } else {
+          if (errMsg == "501") {
+            GateDialog.showLoginAlert(context);
+          }
+        }
       } else {
-        GateDialog.showAlert(context, "错误", "邮箱和密码不匹配~");
+        GateDialog.showAlert(context, "错误", "未知错误");
       }
     });
   }

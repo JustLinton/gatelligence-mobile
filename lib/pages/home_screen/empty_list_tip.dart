@@ -22,20 +22,30 @@ class _EmptyListTipState extends State<EmptyListTip> {
 
   Column getContent(int type){
     if(type==1){
-      return Column(children: [
-              Text('data'),
+      return Column(
+        mainAxisAlignment: MainAxisAlignment.center,
+        children: [
+              Icon(Icons.bookmark_border),
+              Padding(padding: EdgeInsets.only(bottom: 8)),
+              Text('快用知识填满森林吧~'),
             ],);
     }
     if (type == 0) {
       return Column(
+        mainAxisAlignment: MainAxisAlignment.center,
         children: [
-          Text('未登录'),
+          Icon(Icons.do_not_disturb),
+          Padding(padding: EdgeInsets.only(bottom: 8)),
+          Text('登录后才可查看个人知识库~'),
         ],
       );
     }
     return Column(
+      mainAxisAlignment: MainAxisAlignment.center,
       children: [
-        Text('发生错误'),
+        Icon(Icons.error_outline),
+        Padding(padding: EdgeInsets.only(bottom: 8)),
+        Text('凝智君走神了，发生了一些错误~'),
       ],
     );
   }

@@ -4,16 +4,24 @@ import 'package:gatelligence/utils/myColor.dart';
 
 import 'package:circular_profile_avatar/circular_profile_avatar.dart';
 
-class UserProfileCard extends StatelessWidget {
-  String content = "加载中..";
+import '../../widgets/login_sheet.dart';
 
-  UserProfileCard(String cont) {
-    content = cont;
-  }
+class UserProfileCard extends StatelessWidget {
+  String nickName = "加载中...";
+  String email = "";
+  String avatarLink = "";
+
+  UserProfileCard(this.nickName, this.email, this.avatarLink);
+
+  // UserProfileCard(String nickName_,String email_,String avatarLink_) {
+  //   nickName=nickName_;
+  //   email=email_;
+  //   avatarLink=avatarLink_;
+  // }
 
   @override
   Widget build(BuildContext context) {
-    return Card(
+    return InkWell(child: Card(
       color: gateAccentLightColor,
       shape: const RoundedRectangleBorder(
         borderRadius: BorderRadius.all(Radius.circular(12.0)),
@@ -27,7 +35,9 @@ class UserProfileCard extends StatelessWidget {
             children: <Widget>[
               Padding(padding: EdgeInsets.only(left: 30)),
               CircularProfileAvatar(
-                'https://linton-pics.oss-cn-beijing.aliyuncs.com/images/%E5%A4%B4%E5%83%8F.jpg', //sets image path, it should be a URL string. default value is empty string, if path is empty it will display only initials
+                // 'https://linton-pics.oss-cn-beijing.aliyuncs.com/images/%E5%A4%B4%E5%83%8F.jpg', /
+                avatarLink,
+                ///sets image path, it should be a URL string. default value is empty string, if path is empty it will display only initials
                 radius: 43, // sets radius, default 50.0
                 backgroundColor: Colors
                     .transparent, // sets background color, default Colors.white
@@ -56,7 +66,7 @@ class UserProfileCard extends StatelessWidget {
                 crossAxisAlignment: CrossAxisAlignment.start,
                 children:<Widget>[
               Text(
-                '不明飛行',
+                nickName,
                 style: TextStyle(
                   fontSize: 20,
                   fontWeight: FontWeight.bold,
@@ -67,7 +77,7 @@ class UserProfileCard extends StatelessWidget {
               Container(
                 width: 200,
                 child: Text(
-                '2705111998@qq.com',
+                email,
                 maxLines: 1,
                 overflow: TextOverflow.ellipsis,
                 style: TextStyle(
@@ -81,6 +91,25 @@ class UserProfileCard extends StatelessWidget {
             ]),
             ],
           )),
+    ),
+    
+    onTap: (){
+      if(email=='点击登录凝智云'){
+        showModalBottomSheet(
+              context: context,
+              isScrollControlled: true,
+              shape: const RoundedRectangleBorder(
+                //这里是modal的边框样式
+                borderRadius: BorderRadius.only(
+                  topLeft: Radius.circular(20),
+                  topRight: Radius.circular(20),
+                ),
+              ),
+              builder: (BuildContext context) {
+                return LoginSheet(1);
+              });
+      }
+    },
     );
   }
 }

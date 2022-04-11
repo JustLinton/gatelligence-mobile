@@ -2,8 +2,11 @@ import 'dart:convert';
 
 import 'package:dio/dio.dart';
 import 'package:gatelligence/entity/checkLinkTransactionResponse.dart';
+import 'package:gatelligence/entity/simpleResponse.dart';
 import 'package:gatelligence/utils/localStorage.dart';
 import 'package:shared_preferences/shared_preferences.dart';
+import 'package:gatelligence/entity/createLinkTransactionResponse.dart';
+import 'package:gatelligence/entity/fetchUserInfoResponse.dart';
 
 import 'package:gatelligence/entity/userTaskList.dart';
 
@@ -74,6 +77,22 @@ class Service {
     return ret;
   }
 
+   static Future<CreateLinkTransactionResponse> createLinkTransaction(String link) async {
+    Response response;
+    CreateLinkTransactionResponse ret;
+    var dio = Dio();
+    var token = await LocalStorage.getString('token');
+    var formData = FormData.fromMap({
+      'token': token,
+      'link': link,
+    });
+    response = await dio.post(baseURL + '/frontEnd/uploadLink', data: formData);
+    var data = jsonDecode(response.toString()); //3
+    ret = CreateLinkTransactionResponse.fromJson(data);
+
+    return ret;
+  }
+
    static Future<CheckLinkTransactionResponse> checkLinkTransaction(String tid) async {
     Response response;
     CheckLinkTransactionResponse ret;
@@ -83,12 +102,61 @@ class Service {
       'token': token,
       'tid': tid,
     });
-    response = await dio.post(baseURL + '/frontEnd/checkLinkTransaction', data: formData);
+    try{response = await dio.post(baseURL + '/frontEnd/checkLinkTransaction', data: formData);
     var data = jsonDecode(response.toString()); //3
-    ret = CheckLinkTransactionResponse.fromJson(data);
+    ret = CheckLinkTransactionResponse.fromJson(data);}catch(e){
+      print('checkLinkTransFailed.');
+      return CheckLinkTransactionResponse(isSuccess: false);
+      
+    }
 
     return ret;
   }
+
+  static Future<FetchUserInfoResponse> fetchUserInfo() async {
+    Response response;
+    FetchUserInfoResponse ret;
+    var dio = Dio();
+    var token = await LocalStorage.getString('token');
+    var formData = FormData.fromMap({
+      'token': token,
+    });
+    try{
+      response = await dio.post(baseURL + '/frontEnd/fetchUserInfo',
+            data: formData);
+        var data = jsonDecode(response.toString()); //3
+        ret = FetchUserInfoResponse.fromJson(data);
+    }catch(e){
+      return FetchUserInfoResponse(isSuccess: false,errorMsg: "501");
+    }
+  
+    return ret;
+  }
+
+  static Future<SimpleResponse> setUserBasicInfo(FetchUserInfoResponse userInfo,String avatarID) async {
+    Response response;
+    SimpleResponse ret;
+    var dio = Dio();
+    var token = await LocalStorage.getString('token');
+    var formData = FormData.fromMap({
+      'token': token,
+      'name':userInfo.nickName,
+      'gender':userInfo.gender,
+      'email': userInfo.email,
+      'avatar': avatarID,
+    });
+    try {
+      response =
+          await dio.post(baseURL + '/frontEnd/setUserInfo', data: formData);
+      var data = jsonDecode(response.toString()); //3
+      ret = SimpleResponse.fromJson(data);
+    } catch (e) {
+      return SimpleResponse(isSuccess: false, errorMsg: "501");
+    }
+
+    return ret;
+  }
+  
 
   static logout(){
     LocalStorage.remove('token');

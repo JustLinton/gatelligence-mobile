@@ -17,16 +17,30 @@ import 'package:gatelligence/utils/welcomeAnimControl.dart';
 class UserSettingsGroup extends StatefulWidget {
   int type = 1;
   
+  bool customized=false;
+  late Column customColumn;
+  late String customTitle;
+
+  var userScreenRefreshFunc;
+
+
   UserSettingsGroup(int t){
     type=t;
   }
+
+  UserSettingsGroup.withUserScreenRefreshFunc(this.type,this.userScreenRefreshFunc);
+
+  UserSettingsGroup.fromCustomized(this.customTitle,this.customColumn,this.userScreenRefreshFunc) {
+    customized=true;
+  }
+  
   _UserSettingsGroupState createState() => _UserSettingsGroupState(type);
 }
 
 class _UserSettingsGroupState extends State<UserSettingsGroup> {
 
   int type = 1;
-  bool _switchValue1=true;
+  bool _switchValue1=false;
   // Obtain shared preferences.
   // final prefs = SharedPreferences.getInstance();
 
@@ -66,7 +80,7 @@ class _UserSettingsGroupState extends State<UserSettingsGroup> {
                       // height: 330,
                       width: MediaQuery.of(context).size.width,
                       // alignment: Alignment(-1,0),
-                      child:  getColumn(type)
+                      child:  widget.customized? widget.customColumn: getColumn(type)
                     ),
                   ),
                 Padding(padding: EdgeInsets.only(bottom: 16)),
@@ -78,11 +92,16 @@ class _UserSettingsGroupState extends State<UserSettingsGroup> {
 
 
 String getTitle(int type) {
+
+    if(widget.customized){
+      return widget.customTitle;
+    }
+
     if (type == 1) {
       return "个人设置";
     }
     if (type == 2) {
-      return "开发";
+      return "其他";
     } else {
       return "调试";
     }
@@ -99,7 +118,7 @@ String getTitle(int type) {
             enabled: true,
             onTap: () {
                  Navigator.push(context,  MaterialPageRoute(
-                    builder: (context) => PersonalInfoSettings(),
+                    builder: (context) => PersonalInfoSettings(widget.userScreenRefreshFunc),
                   ),
                 );
             },
@@ -122,10 +141,10 @@ String getTitle(int type) {
             color: Color.fromARGB(255, 161, 174, 233),
           ),
           ListTile(
-            title: Text('绑定邮箱'),
-            leading: Icon(Icons.mail_outline_rounded),
+            title: Text('安全设置'),
+            leading: Icon(Icons.password_outlined),
             trailing: Icon(Icons.keyboard_arrow_right),
-            enabled: true,
+            enabled: false,
             onTap: () {},
           ),
          
@@ -136,6 +155,7 @@ String getTitle(int type) {
           ),
           ListTile(
               title: Text('消息通知'),
+              enabled:false,
               leading: Icon(Icons.message_outlined),
               trailing: Switch(
                   inactiveThumbColor: Colors.white,
@@ -145,7 +165,7 @@ String getTitle(int type) {
                   value: _switchValue1,
                   onChanged: (value) {
                     setState(() {
-                      _switchValue1 = value;
+                      // _switchValue1 = value;
                     });
                   })),
           Divider(
@@ -159,7 +179,10 @@ String getTitle(int type) {
             trailing: Icon(Icons.keyboard_arrow_right),
             enabled: true,
             onTap: () {
-              Service.logout();
+              GateDialog.showFunctionAlert(context, '确认', '真的要退出登录吗', (){
+                Service.logout();
+                widget.userScreenRefreshFunc();
+              });
             },
           ),
         ],
@@ -172,7 +195,7 @@ String getTitle(int type) {
             title: Text('开发人员选项'),
             leading: Icon(Icons.code_outlined),
             trailing: Icon(Icons.keyboard_arrow_right),
-            enabled: true,
+            enabled: false,
             onTap: () {
               Navigator.push(
                 context,
@@ -188,14 +211,26 @@ String getTitle(int type) {
             color: Color.fromARGB(255, 161, 174, 233),
           ),
           ListTile(
-            title: Text('重新激活引导页'),
+            title: Text('重新观看引导动画'),
             leading: Icon(Icons.restore_outlined),
             trailing: Icon(Icons.keyboard_arrow_right),
             enabled: true,
             onTap: (){
               WelAnimCntl.activate();
             },
-          ),    
+          ),   
+          Divider(
+            height: 0.0,
+            indent: 0.0,
+            color: Color.fromARGB(255, 161, 174, 233),
+          ),
+          ListTile(
+            title: Text('关于'),
+            leading: Icon(Icons.info_outline_rounded),
+            trailing: Icon(Icons.keyboard_arrow_right),
+            enabled: true,
+            onTap: (){
+            }, ),
         ],
       );
     }

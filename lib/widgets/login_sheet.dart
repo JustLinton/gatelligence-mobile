@@ -1,5 +1,6 @@
 import 'package:flutter/material.dart';
 import 'package:gatelligence/service/services.dart';
+import 'package:gatelligence/utils/systemColorSettings.dart';
 import 'package:reactive_forms/reactive_forms.dart';
 
 import 'package:gatelligence/utils/myColor.dart';
@@ -147,6 +148,7 @@ class _LoginSheetState extends State<LoginSheet> {
             MaterialPageRoute(builder: (context) => GateAppRoot()),
             // ignore: unnecessary_null_comparison
             (route) => route == null);
+            utilsSetWhiteSystemColor();
             WelAnimCntl.deactivate();
         }else{
             GateDialog.showAlert(context, "错误","邮箱和密码不匹配~");

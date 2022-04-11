@@ -7,9 +7,7 @@ import 'package:gatelligence/widgets/linkModeCreateSheet.dart';
 class NewTaskOptionsCard extends StatelessWidget {
   String content="加载中..";
 
-  NewTaskOptionsCard(String cont){
-    content=cont;
-  }
+  NewTaskOptionsCard(this.content){}
 
   @override
   Widget build(BuildContext context) {
