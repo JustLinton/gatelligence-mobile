@@ -1,0 +1,51 @@
+ // if(isLoading()&&!_timer.isActive){
+    //   _timer.cancel();//保证唯一性
+    //   _timer = Timer.periodic(const Duration(milliseconds: 3000), (t) async {
+    //   // Future.delayed(const Duration(milliseconds: 4000), () async{
+    //       var tid=widget.content.transactionID;
+    //       // _hasATimer=true;
+    //       if(tid!=null){
+    //           await Service.checkLinkTransaction(tid).then((value) async{
+    //           var success=value.isSuccess;
+    //           var errMsg = value.errorMsg;
+    //           var status=value.status;
+
+    //           var title=value.title;
+    //           if(title!=null)print('query: '+title);
+    //           if(success!=null&&errMsg!=null&& status !=null){
+    //             if (success) {
+    //               // _progressAnimationController.value = getProgress(status);
+    //               // _progressAnimationController.notifyListeners();
+    //               if(getProgress(status)>=0.999){
+    //                   //保证timer的唯一性
+    //                   t.cancel();
+    //               }
+    //               await _progressAnimationController.animateTo(getProgress(status));
+    //               if(getProgress(status)>=0.999){
+    //                 setState(() {
+    //                   widget.content.status="1";
+    //                     //保证timer的唯一性
+    //                   // _hasATimer = false;
+    //                 });
+    //               }
+                 
+    //               // setState(() {
+    //                 // widget._progress=getProgress(status);
+    //                 // widget.content.status=status;
+    //                 // _progressAnimationController.value= getProgress(status);
+    //                 // widget.content.status = status;
+    //               // });
+    //             } else {
+    //               if (errMsg == "501") {
+    //                 GateDialog.showAlert(context, "错误", "未登录");
+    //               }
+    //             }
+    //           }else{
+    //             GateDialog.showAlert(context, "错误", "未知错误");
+    //           }});
+    //       }else{
+    //         GateDialog.showAlert(context, "错误", "未知错误");
+    //       }
+    //   });
+
+    // }

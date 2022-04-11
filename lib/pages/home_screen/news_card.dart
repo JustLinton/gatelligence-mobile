@@ -13,22 +13,59 @@ import 'package:gatelligence/service/services.dart';
 import 'package:gatelligence/entity/checkLinkTransactionResponse.dart';
 import 'package:gatelligence/entity/userTaskList.dart';
 
+
+double getProgress(String? status){
+    // var progress = widget.content.progress;
+    if(status=="0") return 0.15;
+    if (status == "1") return 1.0;
+    if (status == "2") return 0.35;
+    if (status == "3") return 0.65;
+    if (status == "4") return 0.85;
+    if(status=="-2"||status=="-3"||status=="-4")return -1;
+    return 0.0;
+  }
+
+
 class HomeNewsCard extends StatefulWidget {
   TaskList content=TaskList();
+  double _progress = 0;
 
   HomeNewsCard(TaskList cont) {
     content = cont;
+    _progress=getProgress(content.status);
   }
   @override
   _HomeNewsCardState createState() => _HomeNewsCardState();
 }
 
-class _HomeNewsCardState extends State<HomeNewsCard> {
+class _HomeNewsCardState extends State<HomeNewsCard>
+    with SingleTickerProviderStateMixin {
 
-  double _progress = 0;
-  bool _loading = true;
+  late AnimationController _progressAnimationController;
+  bool _queryDoing = false;
+
+  @override
+  void initState() {
+    super.initState();
+    _progressAnimationController = AnimationController(
+      vsync: this,
+      duration: const Duration(seconds: 8),
+    );
+
+    _progressAnimationController.addListener(() => setState(() {}));
+    _progressAnimationController.repeat();
+    _progressAnimationController.value=widget._progress;
+  }
+
+  @override
+  void dispose() {
+    _progressAnimationController.dispose();
+    // _timer.cancel();
+    super.dispose();
+  }
+
  
-  Card getCard(bool loading,double progress){
+  Card getCard(bool loading){
         return Card(
             shape: const RoundedRectangleBorder(
                       borderRadius: BorderRadius.all(Radius.circular(12.0)),
@@ -70,7 +107,8 @@ class _HomeNewsCardState extends State<HomeNewsCard> {
               borderColor: gateAccentLightColor,
               borderWidth: 0,
               borderRadius: 12.0,
-              value: progress,
+              // value: progress,
+              value: _progressAnimationController.value,
               center: getCardContent(),
           ): getCardContent()
         ));
@@ -94,73 +132,51 @@ class _HomeNewsCardState extends State<HomeNewsCard> {
 
   bool isLoading(){
     var status = widget.content.status;
-    if(status=='1') {
+    double progress=getProgress(status);
+    if(progress>=0.999) {
       return false;
     } else{
-      return _loading;
+      return true;
     }
   }
 
-  double getProgress(String? status){
-    // var progress = widget.content.progress;
-    if(status=="0") return 0.15;
-    if (status == "1") return 1.0;
-    if (status == "2") return 0.35;
-    if (status == "3") return 0.65;
-    if (status == "4") return 0.85;
-    if(status=="-2"||status=="-3"||status=="-4")return -1;
-    return 0.0;
-  }
-
-  // void timedQuery(String tid) async {
-  //   int i = 0;
-  //   Timer.periodic(const Duration(milliseconds: 1000), (t) async {
-  //     try {
-  //       await Service.checkLinkTransaction(tid).then((value) {
-  //         var success=value.isSuccess;
-  //         var errMsg = value.errorMsg;
-  //         var progress=value.progress;
-  //         if(success!=null&&errMsg!=null&&progress!=null){
-  //           if (success) {
-  //             setState(() {
-  //               _progress=getProgress(progress);
-  //               if(_progress==1.0)_loading=false;
-  //             });
-  //           } else {
-  //             if (errMsg == "501") {
-  //               GateDialog.showAlert(context, "错误", "未登录");
-  //             }
-  //           }
-  //         }else{
-  //            GateDialog.showAlert(context, "错误", "未知错误");
-  //         }
-  //       });
-  //       i = i + 1;
-  //       if (i >= 900) t.cancel();
-
-  //     }catch(e){
-  //        print("数据获取失败");
-  //     }
-  //   });
-  // }
-
-  @override
-  Widget build(BuildContext context) {
-    
-    if(isLoading()){
-      Future.delayed(const Duration(milliseconds: 4000), () async{
-          var tid=widget.content.transactionID;
-          if(tid!=null){
-              await Service.checkLinkTransaction(tid).then((value) {
+  void query() async{
+    var tid=widget.content.transactionID;
+    //  _progressAnimationController.animateTo(getProgress(widget.content.status));
+          if(tid!=null){            
+              await Service.checkLinkTransaction(tid).then((value) async{
               var success=value.isSuccess;
               var errMsg = value.errorMsg;
               var status=value.status;
+
+              // var title=value.title;
+              // if(title!=null)print('queryasync: '+title);
+
               if(success!=null&&errMsg!=null&& status !=null){
                 if (success) {
-                  setState(() {
-                    _progress=getProgress(status);
-                    if(_progress==1.0)_loading=false;
-                  });
+                  //不要在这里animateto,因为网络请求是异步的（await），会导致可能存在的在已经dispose后才网络请求完成从而被调用的bug。
+                 
+                  if(getProgress(status)>=0.999){
+                    setState(() {
+                      widget.content.status="1";
+                        //保证timer的唯一性
+                      // _hasATimer = false;
+                    });
+                  }else{
+                      widget.content.status = status;
+                      try {
+                      // print('movestatue:' + status);
+                      await _progressAnimationController
+                          .animateTo(getProgress(status));
+                      } catch (e) {
+                        // print('disposed.');
+                        return;
+                      }
+                      Future.delayed(const Duration(milliseconds: 4000), () async{
+                        query();
+                      });
+                  }
+                 
                 } else {
                   if (errMsg == "501") {
                     GateDialog.showAlert(context, "错误", "未登录");
@@ -172,10 +188,24 @@ class _HomeNewsCardState extends State<HomeNewsCard> {
           }else{
             GateDialog.showAlert(context, "错误", "未知错误");
           }
-      });
+  }
 
-    }
+  @override
+  Widget build(BuildContext context) {
+     if(isLoading()&&!_queryDoing){
+       setState(() {
+         _queryDoing=true;
+       });
+       query();
+     }
 
+    // Timer.periodic(Duration(milliseconds: 4000), (timer) async { 
+      
+    //     // _progressAnimationController.value=0.99;
+    //   _progressAnimationController.animateTo(0.99);  
+      
+    //     // await _progressAnimationController.animateTo(0.99);  
+    // });
 
     return InkWell(
         onTap: () {
@@ -195,7 +225,7 @@ class _HomeNewsCardState extends State<HomeNewsCard> {
         width: double.infinity,
         height: 100,
         padding: EdgeInsets.only(left: 0.0, right: 0.0, bottom: 4.0),
-        child: getCard(isLoading(), _progress),
+        child: getCard(isLoading()),
       ),
 
     );

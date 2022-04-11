@@ -1,18 +1,32 @@
-import 'dart:ffi';
-
 import 'package:flutter/material.dart';
-import 'package:gatelligence/utils/myColor.dart';
+import 'package:gatelligence/service/services.dart';
+import 'package:reactive_forms/reactive_forms.dart';
 
-class linkModeCreateSheet extends StatefulWidget {
-  _linkModeCreateSheetState createState() => _linkModeCreateSheetState();
+import 'package:gatelligence/utils/myColor.dart';
+import 'package:gatelligence/widgets/login_thirdparty_card.dart';
+import 'package:gatelligence/widgets/gateRoot.dart';
+import 'package:gatelligence/utils/welcomeAnimControl.dart';
+import 'package:gatelligence/utils/dialogs.dart';
+
+class LinkModeCreateSheet extends StatefulWidget {
+
+
+  LinkModeCreateSheet({Key? key}) : super(key: key) {}
+  @override
+  _LinkModeCreateSheetState createState() => _LinkModeCreateSheetState();
 }
 
-class _linkModeCreateSheetState extends State<linkModeCreateSheet> {
-  // final _BottomNavigationColor = gateAccentColor;
+class _LinkModeCreateSheetState extends State<LinkModeCreateSheet> {
 
-  // var _BottomNavigationBgColor = Colors.white;
-  // int _currentIndex = 0;
-  List<Widget> list = [];
+
+  _LinkModeCreateSheetState() {}
+
+  final form = FormGroup(
+    {
+      'link': FormControl<String>(
+          validators: [Validators.required]),
+    },
+  );
 
   @override
   void initState() {
@@ -33,10 +47,7 @@ class _linkModeCreateSheetState extends State<linkModeCreateSheet> {
                   children: const <Widget>[
                     Padding(
                       padding: EdgeInsets.only(
-                          left: 32.0,
-                          right: 32.0,
-                          top: 32.0,
-                          bottom: 0.0),
+                          left: 32.0, right: 32.0, top: 32.0, bottom: 0.0),
                       child: Text(
                         '链接模式',
                         style: TextStyle(
@@ -51,46 +62,83 @@ class _linkModeCreateSheetState extends State<linkModeCreateSheet> {
                 Row(
                   children: <Widget>[
                     Padding(
-                      padding: EdgeInsets.only(
-                          left: 32.0, right: 32.0, bottom: 8.0),
+                      padding:
+                          EdgeInsets.only(left: 32.0, right: 32.0, bottom: 8.0),
                       child: Container(
                         width: 50,
                         decoration: BoxDecoration(
-                            border: Border.all(
-                                color: gateAccentColor,
-                                width: 1.3)),
+                            border:
+                                Border.all(color: gateAccentColor, width: 1.3)),
                       ),
                     ),
                   ],
                 ),
-                const Padding(
+                Padding(
                   padding: EdgeInsets.all(32.0),
-                  child: TextField(
-                    decoration: InputDecoration(
-                      labelText: "链接",
-                      icon: Icon(Icons.link_outlined),
-                      border: OutlineInputBorder(
-                        borderRadius:
-                            BorderRadius.all(Radius.circular(10)),
-                        borderSide: BorderSide(
-                          width: 2.0,
+                  child: ReactiveForm(
+                    formGroup: this.form,
+                    child: Column(
+                      children: <Widget>[
+                        ReactiveTextField(
+                          decoration: getTextFieldDec(
+                              "视频链接(BiliBili)", const Icon(Icons.link_outlined)),
+                          formControlName: 'link',
+                          validationMessages: (control) =>
+                              {'required': '需要通过链接', 'email': '不是有效的邮箱'},
                         ),
-                      ),
-                      // hintText: "请输入用户名",
-                      // prefixIcon: Icon(Icons.people_alt_rounded)
+                        const Padding(padding: EdgeInsets.only(bottom: 32)),
+                        ReactiveFormConsumer(
+                          builder: (context, form, child) {
+                            return FloatingActionButton(
+                              child: const Icon(
+                                Icons.send_rounded,
+                                size: 30,
+                              ),
+                              onPressed: () {},
+                            );
+                          },
+                        ),
+                        const Padding(padding: EdgeInsets.only(bottom: 16)),
+                      ],
                     ),
                   ),
                 ),
-                FloatingActionButton(
-                  child: const Icon(
-                    Icons.send_rounded,
-                    size: 30,
-                  ),
-                  onPressed: () {},
-                ),
-                Text(' \n \n'),
               ],
             )));
-              
+  }
+
+  void _onSubmit() {
+    GateDialog.showLoading(context);
+    Service.loginViaEmail(
+            form.control('email').value, form.control('password').value)
+        .then((value) {
+      Navigator.pop(context); //关闭加载动画
+      if (value) {
+        Navigator.of(context).pushAndRemoveUntil(
+            MaterialPageRoute(builder: (context) => GateAppRoot()),
+            // ignore: unnecessary_null_comparison
+            (route) => route == null);
+        WelAnimCntl.deactivate();
+      } else {
+        GateDialog.showAlert(context, "错误", "邮箱和密码不匹配~");
+      }
+    });
+  }
+
+  InputDecoration getTextFieldDec(String title, Icon icon) {
+    return InputDecoration(
+      labelText: title,
+      icon: icon,
+      border: OutlineInputBorder(
+        borderRadius: BorderRadius.all(Radius.circular(10)),
+        borderSide: BorderSide(
+          width: 2.0,
+        ),
+      ),
+    );
   }
 }
+
+
+
+

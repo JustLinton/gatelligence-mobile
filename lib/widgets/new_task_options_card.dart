@@ -30,7 +30,7 @@ class NewTaskOptionsCard extends StatelessWidget {
                 ),
               ),
               builder: (BuildContext context) {
-                return linkModeCreateSheet();
+                return LinkModeCreateSheet();
               });
         },
         child: 

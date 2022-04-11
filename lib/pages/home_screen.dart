@@ -212,12 +212,12 @@ class _HomeScreenState extends State<HomeScreen> {
                 /// End of the part
 
                 expandedHeight: 150,
-              ),
+              ),AnimationLimiter( child:
               SliverPadding(
                 padding: EdgeInsets.only(left: 16.0, right: 16.0, bottom: 48.0),
                 sliver: HomeScreenSilverBuilder(
                     _taskList, _firstTimeLoading, _notlogged),
-              ),
+              ),),
             ],
           ),
         ),

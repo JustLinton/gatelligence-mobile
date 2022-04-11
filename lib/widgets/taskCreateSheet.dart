@@ -37,7 +37,7 @@ class _taskCreateSheetState extends State<taskCreateSheet> {
                       padding: EdgeInsets.only(
                           left: 32.0,
                           right: 32.0,
-                          top: 48.0,
+                          top: 32.0,
                           bottom: 0.0),
                       child: Text(
                         '创建新摘要',
@@ -54,7 +54,7 @@ class _taskCreateSheetState extends State<taskCreateSheet> {
                   children: <Widget>[
                     Padding(
                       padding: EdgeInsets.only(
-                          left: 32.0, right: 32.0, bottom: 8.0),
+                          left: 32.0, right: 32.0, bottom: 0.0),
                       child: Container(
                         width: 50,
                         decoration: BoxDecoration(
