@@ -1,4 +1,5 @@
 import 'package:flutter/material.dart';
+import 'package:gatelligence/utils/systemColorSettings.dart';
 import 'package:reactive_forms/reactive_forms.dart';
 
 import 'package:gatelligence/utils/myColor.dart';
@@ -167,6 +168,7 @@ class _RegisterSheetState extends State<RegisterSheet> {
                 // ignore: unnecessary_null_comparison
                 (route) => route == null);
             WelAnimCntl.deactivate();
+            utilsSetWhiteSystemColor();
           } else {
             GateDialog.showAlert(context, "错误", "自动登录失败~");
           }

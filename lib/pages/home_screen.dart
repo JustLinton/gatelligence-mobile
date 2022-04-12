@@ -27,14 +27,54 @@ class HomeScreen extends StatefulWidget {
 class HomeScreenState extends State<HomeScreen> {
   List<TaskList> _taskList = [];
   int maxPageNow = 1;
+
+  double scrollDistance=0;
+
   bool _firstTimeLoading = true;
   bool _notlogged = false;
+
+  bool _refresherBool=true;
 
   RefreshController _refreshController =
       RefreshController(initialRefresh: false);
 
-  doRefresh(){
-    _onRefresh();
+  doRefresh() async {
+    setState(() {
+      _refresherBool=true;
+    });
+    
+    Future.delayed(const Duration(milliseconds: 200),(){
+        setState(() {
+          _refresherBool = false;
+        });
+    });
+  }
+
+  afterSubmitted(){
+    //屎山：直接照搬了_onrefresh()的代码，只改了一行。
+      Service.fetchUserTaskList(maxPageNow).then((value) {
+      var success = value.isSuccess;
+      var errMsg = value.errorMsg;
+      var taskList = value.taskList;
+      if (success != null && errMsg != null && taskList != null) {
+        if (success) {
+          setState(() {
+            _taskList = taskList;
+          });
+        } else {
+          if (errMsg == "501") {
+            GateDialog.showLoginAlert(context);
+            setState(() {
+              _notlogged = true;
+            });
+          }
+        }
+        doRefresh();
+      } else {
+        // GateDialog.showAlert(context, "错误", "未知错误");
+        _refreshController.refreshFailed();
+      }
+    });
   }
 
   void _onRefresh() async {
@@ -61,6 +101,7 @@ class HomeScreenState extends State<HomeScreen> {
         }
         _refreshController.loadComplete();
         _refreshController.refreshCompleted();
+        doRefresh();
       } else {
         // GateDialog.showAlert(context, "错误", "未知错误");
         _refreshController.refreshFailed();
@@ -111,35 +152,42 @@ class HomeScreenState extends State<HomeScreen> {
   @override
   Widget build(BuildContext context) {
     if (_firstTimeLoading) {
-      Service.fetchUserTaskList(maxPageNow).then((value) {
-        var success = value.isSuccess;
-        var errMsg = value.errorMsg;
-        var taskList = value.taskList;
-        bool notlogged=false;
-        if (success != null && errMsg != null && taskList != null) {
-          if (success) {
+
+       //刚进入APP时，强制欣赏动画
+      Future.delayed(const Duration(milliseconds: 620), () async{
+        _refresherBool = false;
+        return true;
+      }).then((value){
+        Service.fetchUserTaskList(maxPageNow).then((value) {
+          var success = value.isSuccess;
+          var errMsg = value.errorMsg;
+          var taskList = value.taskList;
+          bool notlogged = false;
+          if (success != null && errMsg != null && taskList != null) {
+            if (success) {
               setState(() {
                 _taskList = taskList;
               });
-          } else {
-            if (errMsg == "501") {
-              // GateDialog.showAlert(context, "错误", "未登录");
-              // setState(() {
-              //   _notlogged = true;
-              // });
-               notlogged = true;
+            } else {
+              if (errMsg == "501") {
+                // GateDialog.showAlert(context, "错误", "未登录");
+                // setState(() {
+                //   _notlogged = true;
+                // });
+                notlogged = true;
+              }
             }
+          } else {
+            GateDialog.showAlert(context, "错误", "未知错误");
           }
-        } else {
-          GateDialog.showAlert(context, "错误", "未知错误");
-        }
-        if (_firstTimeLoading) {
-          setState(() {
-             _firstTimeLoading = false;
-             _notlogged=notlogged;
-          });
-        }
-        // _refreshController.refreshCompleted();
+          if (_firstTimeLoading) {
+            setState(() {
+              _firstTimeLoading = false;
+              _notlogged = notlogged;
+            });
+          }
+          // _refreshController.refreshCompleted();
+        });
       });
     }
 
@@ -203,6 +251,7 @@ class HomeScreenState extends State<HomeScreen> {
                 /// This is the part you use this package
                 flexibleSpace: CustomizableSpaceBar(
                   builder: (context, scrollingRate) {
+                    scrollDistance=scrollingRate;
                     /// Example content
                     return Padding(
                       padding: EdgeInsets.only(
@@ -225,8 +274,11 @@ class HomeScreenState extends State<HomeScreen> {
                 /// End of the part
 
                 expandedHeight: 150,
-              ),AnimationLimiter( child:
-              SliverPadding(
+              ),
+              _refresherBool
+                  ? SliverToBoxAdapter(child: Text(''))
+                  : AnimationLimiter( child:
+               SliverPadding(
                 padding: EdgeInsets.only(left: 16.0, right: 16.0, bottom: 48.0),
                 sliver: HomeScreenSilverBuilder(
                     _taskList, _firstTimeLoading, _notlogged),

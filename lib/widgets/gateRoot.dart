@@ -89,9 +89,18 @@ class _GateAppRootState extends State<GateAppRoot> {
         rightCornerRadius: 18,
         backgroundColor: Colors.white,
         onTap: (index) { 
-          if(index==0){utilsSetWhiteSystemColor();}
-          if(index==1)utilsSetGatBlueSystemColor();
+          int curInd=_currentIndex;
           setState(() => _currentIndex = index);
+          if(index==0){utilsSetWhiteSystemColor();
+            var distance = homeScreenKey.currentState?.scrollDistance;
+            if(distance!=null&&distance>=0.99999||curInd==0){
+              return;
+            }
+            homeScreenKey.currentState?.doRefresh();
+          }
+          if(index==1){
+            utilsSetGatBlueSystemColor();
+          }
         },
         //other params
       ),

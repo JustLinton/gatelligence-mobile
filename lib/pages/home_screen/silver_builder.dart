@@ -38,15 +38,25 @@ class _HomeScreenSilverBuilderState extends State<HomeScreenSilverBuilder> {
                     );
                   }
                   if(index==1){
-                    return Padding(
-                      padding: const EdgeInsets.only(top: 32.0, bottom: 16.0),
-                      child: HomeTitle("知识森林"),
+                    return AnimationConfiguration.staggeredList(
+                    position: index,
+                    delay: const Duration(milliseconds: 200),
+                    duration: const Duration(milliseconds: 822),
+                    child: SlideAnimation(
+                    verticalOffset: 50.0,
+                    child: FadeInAnimation(
+                      child:  Padding(
+                            padding: const EdgeInsets.only(top: 32.0, bottom: 16.0),
+                            child: HomeTitle("知识森林"),)
+                      ),
+                    ),
                     );
                   }
                   // return HomeNewsCard("Gatelligence Dynamic News Line", 0.73,index==2?true:false);
                   return AnimationConfiguration.staggeredList(
                     position: index,
-                    duration: const Duration(milliseconds: 212),
+                    delay: const Duration(milliseconds: 200),
+                    duration: const Duration(milliseconds: 612),
                     child: SlideAnimation(
                       verticalOffset: 50.0,
                       child: FadeInAnimation(

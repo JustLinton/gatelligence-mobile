@@ -129,7 +129,7 @@ class _LinkModeCreateSheetState extends State<LinkModeCreateSheet> {
           //     // ignore: unnecessary_null_comparison
           //     (route) => route == null);
           // utilsSetWhiteSystemColor();
-          widget.homeScreenKey.currentState?.doRefresh();
+          widget.homeScreenKey.currentState?.afterSubmitted();
         } else {
           if (errMsg == "501") {
             GateDialog.showLoginAlert(context);
