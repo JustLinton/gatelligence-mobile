@@ -154,7 +154,7 @@ class HomeScreenState extends State<HomeScreen> {
     if (_firstTimeLoading) {
 
        //刚进入APP时，强制欣赏动画
-      Future.delayed(const Duration(milliseconds: 620), () async{
+      Future.delayed(const Duration(milliseconds: 400), () async{
         _refresherBool = false;
         return true;
       }).then((value){

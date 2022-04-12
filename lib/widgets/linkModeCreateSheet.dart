@@ -93,13 +93,23 @@ class _LinkModeCreateSheetState extends State<LinkModeCreateSheet> {
                         const Padding(padding: EdgeInsets.only(bottom: 32)),
                         ReactiveFormConsumer(
                           builder: (context, form, child) {
-                            return FloatingActionButton(
+                            
+                            return form.valid?FloatingActionButton(
+                              elevation: 0,
                               child: const Icon(
                                 Icons.send_rounded,
                                 size: 30,
                               ),
                               onPressed: _onSubmit,
-                            );
+                            ): FloatingActionButton(
+                                    elevation: 0,
+                                    backgroundColor: gateDisabledColor,
+                                    child: const Icon(
+                                      Icons.send_rounded,
+                                      size: 30,
+                                    ),
+                                    onPressed: null,
+                                  );
                           },
                         ),
                         const Padding(padding: EdgeInsets.only(bottom: 16)),

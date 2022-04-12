@@ -7,6 +7,7 @@ import 'package:gatelligence/utils/myColor.dart';
 import 'package:customizable_space_bar/customizable_space_bar.dart';
 import 'package:gatelligence/service/services.dart';
 import 'package:gatelligence/pages/user_screen/silver_builder.dart';
+import 'package:gatelligence/pages/user_screen/skeleton_silver_builder.dart';
 
 import '../utils/dialogs.dart';
 
@@ -25,8 +26,18 @@ class UserScreenState extends State<UserScreen> {
   String _nickName = "";
   String _email = "";
 
+  bool _refreshBool=true;
+
   refresh(){
-    setState(() {});
+    setState(() {
+      _refreshBool=true;
+    });
+
+    Future.delayed(Duration(milliseconds: 100),(){
+      setState(() {
+        _refreshBool=false;
+      });
+    });
   }
 
   void fetchInfo() async {
@@ -117,7 +128,7 @@ class UserScreenState extends State<UserScreen> {
             ),
             SliverPadding(
               padding: EdgeInsets.only(left: 16.0,right: 16.0,bottom: 48.0),
-              sliver:  UserScreenSilverBuilder(
+              sliver: _refreshBool?UserScreenSkeletonSilverBuilder():UserScreenSilverBuilder(
                   refresh,_nickName,_email,_avatarLink),
             ),
           ],

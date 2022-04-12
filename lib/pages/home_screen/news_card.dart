@@ -19,7 +19,7 @@ double getProgress(String? status) {
   if (status == "1") return 1.0;
   if (status == "2") return 0.35;
   if (status == "3") return 0.65;
-  if (status == "4") return 0.85;
+  if (status == "4") return 0.95;
   if (status == "-2" || status == "-3" || status == "-4") return -1;
   return 0.0;
 }
@@ -40,6 +40,8 @@ class _HomeNewsCardState extends State<HomeNewsCard>
     with SingleTickerProviderStateMixin {
   late AnimationController _progressAnimationController;
   bool _queryDoing = false;
+
+  int failTrial=0;
 
   @override
   void initState() {
@@ -144,36 +146,46 @@ class _HomeNewsCardState extends State<HomeNewsCard>
         var errMsg = value.errorMsg;
         var status = value.status;
 
-        // var title=value.title;
-        // if(title!=null)print('queryasync: '+title);
+        var title=value.title;
+        if(title!=null)print('queryasync: '+tid);
 
         if (success != null && errMsg != null && status != null) {
+        
           if (success) {
             //不要在这里animateto,因为网络请求是异步的（await），会导致可能存在的在已经dispose后才网络请求完成从而被调用的bug。
-
             if (getProgress(status) >= 0.999) {
+              print('ok 1.');
               setState(() {
                 widget.content.status = "1";
+                
                 //保证timer的唯一性
                 // _hasATimer = false;
               });
             } else {
               widget.content.status = status;
               try {
-                // print('movestatue:' + status);
+                print('movestatue:' + status);
                 await _progressAnimationController
                     .animateTo(getProgress(status));
               } catch (e) {
-                // print('disposed.');
+                print('disposed.');
                 return;
               }
-              Future.delayed(const Duration(milliseconds: 4000), () async {
+              // Future.delayed(const Duration(milliseconds: 4000), () async {
                 query();
-              });
+              // });
             }
           } else {
+            if(errMsg=="outMarshal error."){
+              failTrial++;
+              if (failTrial>=10){
+                 GateDialog.showErrorAlert(context, 45);
+              }
+              //重新尝试轮询请求
+              query();
+            }
             if (errMsg == "501") {
-              GateDialog.showAlert(context, "错误", "未登录");
+              // GateDialog.showAlert(context, "错误", "未登录");
             }
           }
         } else {
@@ -187,12 +199,18 @@ class _HomeNewsCardState extends State<HomeNewsCard>
 
   @override
   Widget build(BuildContext context) {
-    if (isLoading() && !_queryDoing) {
-      setState(() {
-        _queryDoing = true;
-      });
+     if (isLoading() &&!_queryDoing) {
       query();
+      _queryDoing=true;
     }
+
+
+    // if (isLoading() && !_queryDoing) {
+    //   query();
+    //   setState(() {
+    //     _queryDoing = true;
+    //   });
+    // }
 
     // Timer.periodic(Duration(milliseconds: 4000), (timer) async {
 
