@@ -49,3 +49,85 @@
     //   });
 
     // }
+
+
+
+
+
+
+  // double getDeltaTrans(String status){
+  //   double ret = getProgress(status);
+  //   int statusInt = 0;
+  //   try{
+  //      statusInt = int.parse(status);
+  //   }catch(e){
+  //     return ret;
+  //   }
+  //   double upperBound=getProgress((statusInt+1).toString());
+  //   print(upperBound);
+  //   if(ret+0.0003<=upperBound)return 0.0003;
+  //   return 0;
+  // }
+
+  // void query() async {
+  //   var tid = widget.content.transactionID;
+  //   //  _progressAnimationController.animateTo(getProgress(widget.content.status));
+  //   if (tid != null) {
+  //     await Service.checkLinkTransaction(tid).then((value) async {
+  //       var success = value.isSuccess;
+  //       var errMsg = value.errorMsg;
+  //       var status = value.status;
+
+  //       // var title=value.title;
+  //       // if(title!=null)print('queryasync: '+tid);
+
+  //       if (success != null && errMsg != null && status != null) {
+        
+  //         if (success) {
+  //           //不要在这里animateto,因为网络请求是异步的（await），会导致可能存在的在已经dispose后才网络请求完成从而被调用的bug。
+  //           if (getProgress(status) >= 0.999) {
+  //             // print('ok 1.');
+  //             setState(() {
+  //               widget.content.status = "1";
+                
+  //               //保证timer的唯一性
+  //               // _hasATimer = false;
+  //             });
+  //           } else {
+  //             widget.content.status = status;
+  //             try {
+  //               // print('movestatue:' + status);
+  //               await _progressAnimationController
+  //                   .animateTo(getProgress(status));
+  //             } catch (e) {
+  //               // print('disposed.');
+  //               return;
+  //             }
+  //             Future.delayed(const Duration(milliseconds: 2500), () async {
+  //               // await _progressAnimationController.animateTo(getProgress(status)+getDeltaTrans(status));
+  //               query();
+  //             });
+  //           }
+  //         } else {
+  //           print(value.toJson());
+  //           if(errMsg=="outMarshal error."){
+  //             failTrial++;
+  //             // if (failTrial>=10){
+  //             //    GateDialog.showErrorAlert(context, 45);
+  //             // }
+  //             //重新尝试轮询请求
+  //             query();
+  //           }
+  //           if (errMsg == "501") {
+  //             // GateDialog.showAlert(context, "错误", "未登录");
+  //           }
+  //         }
+  //       } else {
+  //         GateDialog.showErrorAlert(context,43);
+  //       }
+  //     });
+  //   } else {
+  //     GateDialog.showErrorAlert(context, 44);
+  //   }
+  // }
+

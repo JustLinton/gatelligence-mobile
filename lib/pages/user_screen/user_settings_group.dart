@@ -1,4 +1,5 @@
 import 'package:flutter/material.dart';
+import 'package:gatelligence/pages/info_screen.dart';
 
 import 'package:gatelligence/utils/myColor.dart';
 import 'package:gatelligence/utils/localStorage.dart';
@@ -14,12 +15,15 @@ import 'package:gatelligence/utils/systemColorSettings.dart';
 import 'package:gatelligence/utils/dialogs.dart';
 import 'package:gatelligence/utils/welcomeAnimControl.dart';
 
+import '../introduction_animation/introduction_animation_screen.dart';
+
 class UserSettingsGroup extends StatefulWidget {
   int type = 1;
   
   bool customized=false;
   late Column customColumn;
   late String customTitle;
+  late bool loggedIn;
 
   var userScreenRefreshFunc;
 
@@ -29,6 +33,8 @@ class UserSettingsGroup extends StatefulWidget {
   }
 
   UserSettingsGroup.withUserScreenRefreshFunc(this.type,this.userScreenRefreshFunc);
+  UserSettingsGroup.withUserScreenRefreshFuncAndLoggedIn(
+      this.type, this.userScreenRefreshFunc,this.loggedIn);
 
   UserSettingsGroup.fromCustomized(this.customTitle,this.customColumn,this.userScreenRefreshFunc) {
     customized=true;
@@ -40,7 +46,7 @@ class UserSettingsGroup extends StatefulWidget {
 class _UserSettingsGroupState extends State<UserSettingsGroup> {
 
   int type = 1;
-  bool _switchValue1=false;
+  bool _switchValue1=true;
   // Obtain shared preferences.
   // final prefs = SharedPreferences.getInstance();
 
@@ -115,7 +121,7 @@ String getTitle(int type) {
             title: Text('个人信息'),
             leading: Icon(Icons.person_outline_rounded),
             trailing: Icon(Icons.keyboard_arrow_right),
-            enabled: true,
+            enabled: widget.loggedIn,
             onTap: () {
                  Navigator.push(context,  MaterialPageRoute(
                     builder: (context) => PersonalInfoSettings(widget.userScreenRefreshFunc),
@@ -155,7 +161,7 @@ String getTitle(int type) {
           ),
           ListTile(
               title: Text('消息通知'),
-              enabled:false,
+              // enabled:false,
               leading: Icon(Icons.message_outlined),
               trailing: Switch(
                   inactiveThumbColor: Colors.white,
@@ -165,7 +171,7 @@ String getTitle(int type) {
                   value: _switchValue1,
                   onChanged: (value) {
                     setState(() {
-                      // _switchValue1 = value;
+                      _switchValue1 = value;
                     });
                   })),
           Divider(
@@ -177,7 +183,7 @@ String getTitle(int type) {
             title: Text('退出登录'),
             leading: Icon(Icons.logout_outlined),
             trailing: Icon(Icons.keyboard_arrow_right),
-            enabled: true,
+            enabled: widget.loggedIn,
             onTap: () {
               GateDialog.showFunctionAlert(context, '确认', '真的要退出登录吗', (){
                 Service.logout();
@@ -211,12 +217,17 @@ String getTitle(int type) {
             color: Color.fromARGB(255, 161, 174, 233),
           ),
           ListTile(
-            title: Text('重新观看引导动画'),
+            title: Text('重新观看介绍动画'),
             leading: Icon(Icons.restore_outlined),
             trailing: Icon(Icons.keyboard_arrow_right),
             enabled: true,
             onTap: (){
-              WelAnimCntl.activate();
+              // WelAnimCntl.activate();
+               Navigator.of(context).pushAndRemoveUntil(
+                  MaterialPageRoute(builder: (context) => IntroductionAnimationScreen()),
+                  // ignore: unnecessary_null_comparison
+                  (route) => route == null);
+              utilsSetWhiteSystemColor();
             },
           ),   
           Divider(
@@ -230,6 +241,12 @@ String getTitle(int type) {
             trailing: Icon(Icons.keyboard_arrow_right),
             enabled: true,
             onTap: (){
+              Navigator.push(context, MaterialPageRoute<void>(
+                builder: (BuildContext context) {
+                  return InfoScreen();
+                },
+              ));
+
             }, ),
         ],
       );

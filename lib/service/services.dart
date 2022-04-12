@@ -133,7 +133,7 @@ class Service {
     return ret;
   }
 
-  static Future<SimpleResponse> setUserBasicInfo(FetchUserInfoResponse userInfo,String avatarID) async {
+  static Future<SimpleResponse> setUserBasicInfo(FetchUserInfoResponse userInfo) async {
     Response response;
     SimpleResponse ret;
     var dio = Dio();
@@ -143,7 +143,7 @@ class Service {
       'name':userInfo.nickName,
       'gender':userInfo.gender,
       'email': userInfo.email,
-      'avatar': avatarID,
+      // 'avatar': avatarID,
     });
     try {
       response =
@@ -157,6 +157,18 @@ class Service {
     return ret;
   }
   
+
+  static Future<String> queryLinkTransationStatus(String tid) async {
+    Response response;
+    var dio = Dio();
+    // var token = await LocalStorage.getString('token');
+    var formData = FormData.fromMap({
+      'tid': tid,
+    });
+    response = await dio.post(baseURL + '/frontEnd/checkLinkTaskStatus', data: formData);
+    return response.toString();
+  }
+
 
   static logout(){
     LocalStorage.remove('token');

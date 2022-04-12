@@ -79,8 +79,8 @@ class _TaskCreateSheetState extends State<TaskCreateSheet> {
                       mainAxisAlignment: MainAxisAlignment.spaceEvenly,
                       crossAxisAlignment: CrossAxisAlignment.center,
                       children: <Widget>[
-                          NewTaskOptionsCard("链接模式",widget.homeScreenKey),
-                          NewTaskOptionsCard("本地模式",widget.homeScreenKey),
+                          NewTaskOptionsCard("链接模式",widget.homeScreenKey,true),
+                          NewTaskOptionsCard("本地模式",widget.homeScreenKey,false),
                     ],)
 
                 ],),

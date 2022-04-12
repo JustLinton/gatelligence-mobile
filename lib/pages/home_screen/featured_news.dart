@@ -40,12 +40,12 @@ class HomeFeaturedNews extends StatelessWidget {
                           child: SlideAnimation(
                             horizontalOffset: 50.0,
                             child: FadeInAnimation(
-                              child: HomeFeaturedCard("Gatelligence Dynamic Card"),
+                              child: HomeFeaturedCard(index),
                             ),
                           ),
                       ); 
                     },
-                    itemCount: 7,
+                    itemCount: 4,
                   ),
                 ),
                 

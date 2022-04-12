@@ -9,6 +9,7 @@ import 'package:gatelligence/utils/myColor.dart';
 import 'package:customizable_space_bar/customizable_space_bar.dart';
 
 import 'package:gatelligence/pages/home_screen/silver_builder.dart';
+import 'package:gatelligence/utils/skeletons.dart';
 import 'package:http/http.dart';
 
 import 'package:pull_to_refresh/pull_to_refresh.dart';
@@ -149,13 +150,49 @@ class HomeScreenState extends State<HomeScreen> {
     }
   }
 
+  Column getLoadingSkeleton(){
+    return Column(
+      mainAxisAlignment: MainAxisAlignment.start,
+      children: [
+        Padding(padding: EdgeInsets.only(top: 32)),
+        Padding(
+          padding: EdgeInsets.only(left: 16,right: 16),
+          child:GateSkeletons.getCardSkeleton(double.infinity, 64),
+        ),
+        Padding(padding: EdgeInsets.only(top: 16)),
+        Padding(
+          padding: EdgeInsets.only(left: 16, right: 16),
+          child: GateSkeletons.getCardSkeleton(double.infinity, 128),
+        ),
+        Padding(padding: EdgeInsets.only(top: 16)),
+        Padding(
+          padding: EdgeInsets.only(left: 16, right: 16),
+          child: GateSkeletons.getCardSkeleton(double.infinity, 64),
+        ),
+        Padding(padding: EdgeInsets.only(top: 16)),
+        Padding(
+          padding: EdgeInsets.only(left: 16, right: 16,bottom: 8),
+          child: GateSkeletons.getCardSkeleton(double.infinity, 100),
+        ),
+        Padding(
+          padding: EdgeInsets.only(left: 16, right: 16, bottom: 8),
+          child: GateSkeletons.getCardSkeleton(double.infinity, 100),
+        ),
+        Padding(
+          padding: EdgeInsets.only(left: 16, right: 16, bottom: 8),
+          child: GateSkeletons.getCardSkeleton(double.infinity, 100),
+        ),
+       
+    ],);
+  }
+
   @override
   Widget build(BuildContext context) {
     if (_firstTimeLoading) {
 
        //刚进入APP时，强制欣赏动画
       Future.delayed(const Duration(milliseconds: 400), () async{
-        _refresherBool = false;
+          _refresherBool = false;
         return true;
       }).then((value){
         Service.fetchUserTaskList(maxPageNow).then((value) {
@@ -276,7 +313,7 @@ class HomeScreenState extends State<HomeScreen> {
                 expandedHeight: 150,
               ),
               _refresherBool
-                  ? SliverToBoxAdapter(child: Text(''))
+                  ? SliverToBoxAdapter(child:getLoadingSkeleton())
                   : AnimationLimiter( child:
                SliverPadding(
                 padding: EdgeInsets.only(left: 16.0, right: 16.0, bottom: 48.0),

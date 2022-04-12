@@ -4,14 +4,18 @@ import 'package:gatelligence/utils/myColor.dart';
 import 'package:gatelligence/pages/user_screen/user_profile_card.dart';
 import 'package:gatelligence/pages/user_screen/user_settings_group.dart';
 
+import '../../utils/skeletons.dart';
+
 class UserScreenSilverBuilder extends StatefulWidget {
   String nickName = "加载中...";
   String email = "";
   String avatarLink = "";
+  bool _dataOkay=false;
+  bool _loggedIn=false;
 
   final userScreenRefreshFunc;
 
-  UserScreenSilverBuilder(this.userScreenRefreshFunc,this.nickName,this.email,this.avatarLink);
+  UserScreenSilverBuilder(this.userScreenRefreshFunc,this.nickName,this.email,this.avatarLink,this._dataOkay,this._loggedIn);
 
   // UserScreenSilverBuilder(String nickName_, String email_, String avatarLink_) {
   //   nickName = nickName_;
@@ -35,7 +39,7 @@ class _UserScreenSilverBuilderState extends State<UserScreenSilverBuilder> {
                   if(index==0) {
                     return Padding(
                         padding: const EdgeInsets.only(top: 32.0,bottom: 16.0),
-                        child: UserProfileCard(widget.nickName,widget.email,widget.avatarLink),
+                        child: widget._dataOkay?UserProfileCard(widget.nickName,widget.email,widget.avatarLink):GateSkeletons.getCardSkeleton(double.infinity, 130),
                     );
                   }
                   // if(index==1){
@@ -44,7 +48,7 @@ class _UserScreenSilverBuilderState extends State<UserScreenSilverBuilder> {
                   //     child: HomeTitle("知识森林"),
                   //   );
                   // }
-                  return UserSettingsGroup.withUserScreenRefreshFunc(index, widget.userScreenRefreshFunc);
+                  return UserSettingsGroup.withUserScreenRefreshFuncAndLoggedIn(index, widget.userScreenRefreshFunc,widget._loggedIn);
                 },
                 childCount: 3
               ),

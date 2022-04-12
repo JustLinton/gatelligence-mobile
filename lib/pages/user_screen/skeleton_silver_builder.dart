@@ -33,14 +33,20 @@ class _UserScreenSkeletonSilverBuilderState extends State<UserScreenSkeletonSilv
                     return Padding(
                         padding: const EdgeInsets.only(top: 32.0,bottom: 16.0),
                         child:  GateSkeletons.getCardSkeleton(double.infinity, 130));  
-                  }
+                    }
                   // if(index==1){
                   //   return Padding(
                   //     padding: const EdgeInsets.only(top: 32.0, bottom: 16.0),
                   //     child: HomeTitle("知识森林"),
                   //   );
                   // }
-                  return Text('data');
+                  if(index==1||index==2){
+                    return Padding(
+                        padding: const EdgeInsets.only(top: 0.0,bottom: 16.0),
+                        child:  GateSkeletons.getCardSkeleton(double.infinity, 260));  
+                    }
+                  
+                  return const Text('');
                 },
                 childCount: 3
               ),

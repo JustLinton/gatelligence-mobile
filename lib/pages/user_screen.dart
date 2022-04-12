@@ -26,14 +26,17 @@ class UserScreenState extends State<UserScreen> {
   String _nickName = "";
   String _email = "";
 
-  bool _refreshBool=true;
+  bool _refreshBool=false;
+  bool _dataOkay =false;
+  bool _loggedIn = false;
 
   refresh(){
+    //重新渲染整个页面，但是不请求数据
     setState(() {
       _refreshBool=true;
     });
 
-    Future.delayed(Duration(milliseconds: 100),(){
+    Future.delayed(const Duration(milliseconds: 1000),(){
       setState(() {
         _refreshBool=false;
       });
@@ -49,12 +52,14 @@ class UserScreenState extends State<UserScreen> {
       var email=value.email;
       var gender=value.gender;
       if (success != null && errMsg != null) {
+        _dataOkay=true;
         if (success && avatarLink!=null&& nickName!=null&&
           email!=null) {
           setState(() {
             _avatarLink=avatarLink;
             _email=email;
             _nickName=nickName;
+            _loggedIn=true;
           });
           await LocalStorage.setString('lastFip', json.encode(value.toJson()).toString());
         } else {
@@ -63,10 +68,14 @@ class UserScreenState extends State<UserScreen> {
               _avatarLink = "";
               _email = "点击登录凝智云";
               _nickName = "未登录 >";
+              _loggedIn=false;
             });
+            await LocalStorage.remove('lastFip');
           }
         }
       } else {
+        await LocalStorage.remove('lastFip');
+        _dataOkay=false;
         GateDialog.showAlert(context, "错误", "获取个人信息信息错误");
       }
     });
@@ -129,7 +138,7 @@ class UserScreenState extends State<UserScreen> {
             SliverPadding(
               padding: EdgeInsets.only(left: 16.0,right: 16.0,bottom: 48.0),
               sliver: _refreshBool?UserScreenSkeletonSilverBuilder():UserScreenSilverBuilder(
-                  refresh,_nickName,_email,_avatarLink),
+                  refresh,_nickName,_email,_avatarLink,_dataOkay, _loggedIn),
             ),
           ],
         ),

@@ -1,5 +1,7 @@
 import 'package:flutter/material.dart';
 import 'package:gatelligence/utils/myColor.dart';
+import 'package:gatelligence/utils/styles.dart';
+import 'package:reactive_forms/reactive_forms.dart';
 
 import '../widgets/login_sheet.dart';
 
@@ -20,17 +22,60 @@ class GateDialog{
               ),
             ),
             actions: <Widget>[
-              new FlatButton(
-                child: new Text('确定'),
-                onPressed: () {
-                  Navigator.of(context).pop();
-                },
-              ),
+              GateStyles.getButton('确定', () {
+              Navigator.pop(context);
+              }, true),
             ],
           );
         },
       );
 
+  }
+
+
+  static Future<String?> showTextFieldDialog(BuildContext context, String title,String tip,IconData icon) async {
+
+    final form = FormGroup(
+    {
+      'text': FormControl<String>(
+          validators: [Validators.required]),
+    },);
+  
+    return showDialog<String>(
+      context: context,
+      barrierDismissible: false,
+      builder: (BuildContext context) {
+        return AlertDialog(
+          title: Text(title),
+          content: SingleChildScrollView(
+            child: ListBody(
+              children: <Widget>[
+                 ReactiveForm(
+                            formGroup: form,
+                            child: Column(
+                              children: <Widget>[
+                 ReactiveTextField(
+                  decoration: GateStyles.getTextFieldDec(
+                      tip, Icon(icon)),
+                  formControlName: 'text',
+                  validationMessages: (control) =>
+                      {'required': '需要输入信息'},
+                ),]))
+              ],
+            ),
+          ),
+          actions: <Widget>[
+            FlatButton(
+              child: Text('取消'),
+              onPressed: () {
+                Navigator.of(context).pop('nil');
+              },
+            ),
+            GateStyles.getButton('确定', (){Navigator.of(context).pop(form.control('text').value);},true),
+          ],
+        );
+      },
+    );
   }
 
   static showErrorAlert(BuildContext context, int code) {
@@ -48,12 +93,7 @@ class GateDialog{
             ),
           ),
           actions: <Widget>[
-            FlatButton(
-              child: new Text('确定'),
-              onPressed: () {
-                Navigator.of(context).pop();
-              },
-            ),
+            GateStyles.getButton('确定',(){Navigator.of(context).pop();},true),
           ],
         );
       },
@@ -83,13 +123,10 @@ class GateDialog{
                 Navigator.of(context).pop();
               },
             ),
-             FlatButton(
-              child: Text('确定'),
-              onPressed: () {
-                Navigator.of(context).pop();
-                func();
-              },
-            ),
+              GateStyles.getButton('确定', () {
+              Navigator.of(context).pop();
+               func();
+            }, true),
             ],
           );
         },
@@ -110,25 +147,23 @@ class GateDialog{
               ),
             ),
             actions: <Widget>[
-              new FlatButton(
-                child: new Text('确定'),
-                onPressed: () {
-                  Navigator.pop(context);
-                  showModalBottomSheet(
-                    context: context,
-                    isScrollControlled: true,
-                    shape: const RoundedRectangleBorder(
-                      //这里是modal的边框样式
-                      borderRadius: BorderRadius.only(
-                        topLeft: Radius.circular(20),
-                        topRight: Radius.circular(20),
-                      ),
+              GateStyles.getButton('确定', () {
+              // Navigator.of(context).pop();
+              Navigator.pop(context);
+              showModalBottomSheet(
+                  context: context,
+                  isScrollControlled: true,
+                  shape: const RoundedRectangleBorder(
+                    //这里是modal的边框样式
+                    borderRadius: BorderRadius.only(
+                      topLeft: Radius.circular(20),
+                      topRight: Radius.circular(20),
                     ),
-                    builder: (BuildContext context) {
-                      return LoginSheet(1);
-                    });
-                },
-              ),
+                  ),
+                  builder: (BuildContext context) {
+                    return LoginSheet(1);
+                  });
+              }, true),
             ],
           );
         },
