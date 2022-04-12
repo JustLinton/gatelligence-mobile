@@ -154,11 +154,11 @@ class _ResultPageState extends State<ResultPage> {
                                           fit:BoxFit.cover
                                         ),),
                                        
-                                        Expanded(
-                                            child: Container(
-                                          color:
-                                              Color.fromARGB(74, 255, 255, 255),
-                                        )),
+                                        // Expanded(
+                                        //     child: Container(
+                                        //   color:
+                                        //       Color.fromARGB(74, 255, 255, 255),
+                                        // )),
                                         Padding(
                                             padding: EdgeInsets.only(
                                                 bottom: 32, left: 32),
@@ -173,11 +173,11 @@ class _ResultPageState extends State<ResultPage> {
                                                   overflow:
                                                       TextOverflow.ellipsis,
                                                   style: TextStyle(
-                                                    color: Colors.black87,
+                                                    color: Colors.white,
                                                     fontWeight: FontWeight.bold,
                                                     fontSize: 23,
-                                                    backgroundColor:
-                                                        Colors.white,
+                                                    // backgroundColor:
+                                                        // Colors.white,
                                                   ),
                                                 ),
                                               ],

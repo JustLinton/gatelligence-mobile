@@ -64,11 +64,11 @@ class NewsScreen extends StatelessWidget {
                                           fit:BoxFit.cover
                                         ),),
                                        
-                                        Expanded(
-                                            child: Container(
-                                          color:
-                                              Color.fromARGB(74, 255, 255, 255),
-                                        )),
+                                        // Expanded(
+                                        //     child: Container(
+                                        //   color:
+                                        //       Color.fromARGB(74, 255, 255, 255),
+                                        // )),
                                         Padding(
                                             padding: EdgeInsets.only(
                                                 bottom: 32, left: 32),

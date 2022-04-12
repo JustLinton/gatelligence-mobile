@@ -24,7 +24,7 @@ void main() {
   utilsSetWhiteSystemColor();
 
   getShowWelcome().then((value) {
-     runApp(MyApp(value));
+      runApp(MyApp(!value));
   },);
 }
 

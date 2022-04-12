@@ -1,8 +1,11 @@
+import 'dart:developer';
 import 'dart:ffi';
 
 import 'package:flutter/material.dart';
 import 'package:gatelligence/pages/user_screen.dart';
 import 'package:gatelligence/pages/home_screen.dart';
+import 'package:gatelligence/utils/dialogs.dart';
+import 'package:gatelligence/utils/localStorage.dart';
 import 'package:gatelligence/utils/myColor.dart';
 
 import 'package:gatelligence/widgets/taskCreateSheet.dart';
@@ -43,8 +46,12 @@ class _GateAppRootState extends State<GateAppRoot> {
           Icons.mic_none_outlined,
           size: 30,
         ),
-        onPressed: () {
-        
+        onPressed: () async{
+          bool logged = await LocalStorage.containsKey('token');
+          if(!logged){
+            GateDialog.showLoginAlert(context);
+            return;
+          }
           showModalBottomSheet(
             context: context,
             isScrollControlled: true,

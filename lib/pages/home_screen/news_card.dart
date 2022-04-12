@@ -205,7 +205,7 @@ class _HomeNewsCardState extends State<HomeNewsCard>
                                 fit: BoxFit.cover,
                                 ),),
                 
-                    Expanded(child: Container(color: Color.fromARGB(74, 255, 255, 255),)),
+                    // Expanded(child: Container(color: Color.fromARGB(74, 255, 255, 255),)),
                     isFailed()?Icon(
                       Icons.cancel_outlined,
                       size: 27,

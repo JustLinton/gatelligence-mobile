@@ -25,17 +25,19 @@ class Service {
   static Future<bool> loginViaEmail(String email, String passwd) async {
     Response response;
     String token,errmsg;
-    bool success;
+    bool success=false;
     var dio = Dio();
     var formData = FormData.fromMap({
       'email': email,
       'password': passwd,
     });
-    response = await dio.post(baseURL + '/frontEnd/login', data: formData);
+    try{response = await dio.post(baseURL + '/frontEnd/login', data: formData);
     var data = jsonDecode(response.toString()); //3
     token = data['Token'];
     success = data['IsSuccess'];
-    errmsg=data['ErrorMsg'];
+    errmsg=data['ErrorMsg'];}catch(e){
+      return false;
+    }
     if(success){
       LocalStorage.setString('token', token);
     }
@@ -45,17 +47,21 @@ class Service {
   static Future<bool> registerViaEmail(String email, String passwd,String nickName) async {
     Response response;
     String errmsg;
-    bool success;
+    bool success=false;
     var dio = Dio();
     var formData = FormData.fromMap({
       'email': email,
       'password': passwd,
       'nickName': nickName,
     });
-    response = await dio.post(baseURL + '/frontEnd/register', data: formData);
-    var data = jsonDecode(response.toString()); //3
-    success = data['IsSuccess'];
-    errmsg = data['ErrorMsg'];
+    try{response = await dio.post(baseURL + '/frontEnd/register', data: formData);
+    var data = jsonDecode(response.toString());
+      success = data['IsSuccess'];
+      errmsg = data['ErrorMsg'];
+    }catch(e){
+      return false;
+    } //3
+  
     return success;
   }
 
@@ -70,9 +76,11 @@ class Service {
       'token': token,
       'page':page,
     });
-    response = await dio.post(baseURL + '/frontEnd/fetchList', data: formData);
+    try{response = await dio.post(baseURL + '/frontEnd/fetchList', data: formData);
     var data = jsonDecode(response.toString()); //3
-    ret=UserTaskList.fromJson(data);
+    ret=UserTaskList.fromJson(data);}catch(e){
+      return UserTaskList(isSuccess: false);
+    }
 
     return ret;
   }
@@ -86,9 +94,11 @@ class Service {
       'token': token,
       'link': link,
     });
-    response = await dio.post(baseURL + '/frontEnd/uploadLink', data: formData);
+     try{response = await dio.post(baseURL + '/frontEnd/uploadLink', data: formData);
     var data = jsonDecode(response.toString()); //3
-    ret = CreateLinkTransactionResponse.fromJson(data);
+    ret = CreateLinkTransactionResponse.fromJson(data);}catch(e){
+      return CreateLinkTransactionResponse(isSuccess: false);
+    }
 
     return ret;
   }
@@ -165,7 +175,9 @@ class Service {
     var formData = FormData.fromMap({
       'tid': tid,
     });
-    response = await dio.post(baseURL + '/frontEnd/checkLinkTaskStatus', data: formData);
+    try{response = await dio.post(baseURL + '/frontEnd/checkLinkTaskStatus', data: formData);}catch(e){
+      return '-1';
+    }
     return response.toString();
   }
 

@@ -1,10 +1,10 @@
 import 'package:gatelligence/utils/localStorage.dart';
 
 class WelAnimCntl{
-  static activate(){
+  static deactivate(){
     LocalStorage.setBool('showWelcome',true);
   }
-  static deactivate(){
+  static activate(){
     LocalStorage.remove('showWelcome');
   }
 }
